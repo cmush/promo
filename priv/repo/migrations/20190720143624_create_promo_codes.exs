@@ -3,11 +3,11 @@ defmodule Promo.Repo.Migrations.CreatePromoCodes do
 
   def change do
     create table(:promo_codes) do
-      add :p_code, :string
-      add :ride_amount, :float
-      add :expiry_date, :date
+      add :p_code, :string, null: false
+      add :ride_amount, :float, null: false
+      add :expiry_date, :date, null: false
       add :status, :boolean, default: false, null: false
-      add :radius, :float
+      add :radius, :float, null: false
 
       timestamps()
     end
