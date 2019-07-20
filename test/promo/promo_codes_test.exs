@@ -69,4 +69,61 @@ defmodule Promo.PromoCodesTest do
       assert %Ecto.Changeset{} = PromoCodes.change_promo_code(promo_code)
     end
   end
+
+  describe "promo_codes" do
+    alias Promo.PromoCodes.PromoCode
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def promo_code_fixture(attrs \\ %{}) do
+      {:ok, promo_code} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> PromoCodes.create_promo_code()
+
+      promo_code
+    end
+
+    test "list_promo_codes/0 returns all promo_codes" do
+      promo_code = promo_code_fixture()
+      assert PromoCodes.list_promo_codes() == [promo_code]
+    end
+
+    test "get_promo_code!/1 returns the promo_code with given id" do
+      promo_code = promo_code_fixture()
+      assert PromoCodes.get_promo_code!(promo_code.id) == promo_code
+    end
+
+    test "create_promo_code/1 with valid data creates a promo_code" do
+      assert {:ok, %PromoCode{} = promo_code} = PromoCodes.create_promo_code(@valid_attrs)
+    end
+
+    test "create_promo_code/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = PromoCodes.create_promo_code(@invalid_attrs)
+    end
+
+    test "update_promo_code/2 with valid data updates the promo_code" do
+      promo_code = promo_code_fixture()
+      assert {:ok, %PromoCode{} = promo_code} = PromoCodes.update_promo_code(promo_code, @update_attrs)
+    end
+
+    test "update_promo_code/2 with invalid data returns error changeset" do
+      promo_code = promo_code_fixture()
+      assert {:error, %Ecto.Changeset{}} = PromoCodes.update_promo_code(promo_code, @invalid_attrs)
+      assert promo_code == PromoCodes.get_promo_code!(promo_code.id)
+    end
+
+    test "delete_promo_code/1 deletes the promo_code" do
+      promo_code = promo_code_fixture()
+      assert {:ok, %PromoCode{}} = PromoCodes.delete_promo_code(promo_code)
+      assert_raise Ecto.NoResultsError, fn -> PromoCodes.get_promo_code!(promo_code.id) end
+    end
+
+    test "change_promo_code/1 returns a promo_code changeset" do
+      promo_code = promo_code_fixture()
+      assert %Ecto.Changeset{} = PromoCodes.change_promo_code(promo_code)
+    end
+  end
 end
