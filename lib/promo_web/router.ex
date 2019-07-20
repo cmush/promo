@@ -10,6 +10,7 @@ defmodule PromoWeb.Router do
     post "/promo_codes", PromoCodeController, :create, except: [:new, :edit]
     get "/promo_codes", PromoCodeController, :index, except: [:new, :edit]
     get "/promo_codes/:id", PromoCodeController, :show, except: [:new, :edit]
+    get "/promo_codes/status/:status", PromoCodeController, :show_where_status
     patch "/promo_codes/:id", PromoCodeController, :update, except: [:new, :edit]
     put "/promo_codes/:id", PromoCodeController, :update, except: [:new, :edit]
     delete "/promo_codes/:id", PromoCodeController, :delete, except: [:new, :edit]

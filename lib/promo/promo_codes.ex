@@ -22,6 +22,23 @@ defmodule Promo.PromoCodes do
   end
 
   @doc """
+  Returns the list of promo_codes depending on status supplied
+  status can be: is true (active) or false (inactive).
+
+  ## Examples
+
+      iex> list_promo_codes(status)
+      [%PromoCode{}, ...]
+
+  """
+  def list_promo_codes(status) do
+    Promo.Repo.all(
+      from pc in PromoCode,
+        where: pc.status == ^status
+    )
+  end
+
+  @doc """
   Gets a single promo_code.
 
   Raises `Ecto.NoResultsError` if the Promo code does not exist.

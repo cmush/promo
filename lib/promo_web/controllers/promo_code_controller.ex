@@ -25,10 +25,16 @@ defmodule PromoWeb.PromoCodeController do
     render(conn, "show.json", promo_code: promo_code)
   end
 
+  def show_where_status(conn, %{"status" => status}) do
+    promo_codes = PromoCodes.list_promo_codes(status)
+    render(conn, "index.json", promo_codes: promo_codes)
+  end
+
   def update(conn, %{"id" => id, "promo_code" => promo_code_params}) do
     promo_code = PromoCodes.get_promo_code!(id)
 
-    with {:ok, %PromoCode{} = promo_code} <- PromoCodes.update_promo_code(promo_code, promo_code_params) do
+    with {:ok, %PromoCode{} = promo_code} <-
+           PromoCodes.update_promo_code(promo_code, promo_code_params) do
       render(conn, "show.json", promo_code: promo_code)
     end
   end
