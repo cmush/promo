@@ -12,5 +12,6 @@ defmodule Promo.Repo.Migrations.CreatePromoCodes do
       timestamps()
     end
 
+    create unique_index(:promo_codes, [:p_code])
   end
 end
