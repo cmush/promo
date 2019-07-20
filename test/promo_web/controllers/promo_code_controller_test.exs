@@ -5,12 +5,26 @@ defmodule PromoWeb.PromoCodeControllerTest do
   alias Promo.PromoCodes.PromoCode
 
   @create_attrs %{
-
+    p_code: "SBPC_TEST_1",
+    ride_amount: 200.00,
+    expiry_date: Date.from_iso8601!("2019-08-19"),
+    status: true,
+    radius: 1.5
   }
   @update_attrs %{
-
+    p_code: "SBPC_TEST_1_UPDATE",
+    ride_amount: 300.00,
+    expiry_date: Date.from_iso8601!("2019-09-19"),
+    status: true,
+    radius: 2.5
   }
-  @invalid_attrs %{}
+  @invalid_attrs %{
+    p_code: nil,
+    ride_amount: nil,
+    expiry_date: nil,
+    status: nil,
+    radius: nil
+  }
 
   def fixture(:promo_code) do
     {:ok, promo_code} = PromoCodes.create_promo_code(@create_attrs)
@@ -31,12 +45,25 @@ defmodule PromoWeb.PromoCodeControllerTest do
   describe "create promo_code" do
     test "renders promo_code when data is valid", %{conn: conn} do
       conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+
+      assert %{
+               "id" => id,
+               "p_code" => p_code,
+               "ride_amount" => ride_amount,
+               "expiry_date" => expiry_date,
+               "status" => status,
+               "radius" => radius
+             } = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
 
       assert %{
-               "id" => id
+               "id" => id,
+               "p_code" => p_code,
+               "ride_amount" => ride_amount,
+               "expiry_date" => expiry_date,
+               "status" => status,
+               "radius" => radius
              } = json_response(conn, 200)["data"]
     end
 
@@ -49,8 +76,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
   describe "update promo_code" do
     setup [:create_promo_code]
 
-    test "renders promo_code when data is valid", %{conn: conn, promo_code: %PromoCode{id: id} = promo_code} do
-      conn = put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @update_attrs)
+    test "renders promo_code when data is valid", %{
+      conn: conn,
+      promo_code: %PromoCode{id: id} = promo_code
+    } do
+      conn =
+        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @update_attrs)
+
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
@@ -61,7 +93,9 @@ defmodule PromoWeb.PromoCodeControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, promo_code: promo_code} do
-      conn = put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+      conn =
+        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
