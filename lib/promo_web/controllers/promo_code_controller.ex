@@ -49,19 +49,30 @@ defmodule PromoWeb.PromoCodeController do
 
   def validate(conn, %{"p_code" => p_code, "origin" => origin, "destination" => destination}) do
     promo_code = PromoCodes.get_promo_code_by_p_code(p_code)
-    case Map.get(promo_code, :status) do
-      true ->
+
+    promo_code
+    |> validate_status()
+    |> case do
+      :deactivated ->
+        render(
+          conn,
+          "promo_code_invalid__status_inactive.json",
+          promo_code: %{}
+        )
+
+      promo_code ->
         render(
           conn,
           "promo_code_valid.json",
           promo_code: Map.put(promo_code, :polyline, fetch_polyline(origin, destination))
         )
-        false ->
-          render(
-          conn,
-          "promo_code_invalid__status_inactive.json",
-          promo_code: Map.put(promo_code, :polyline, fetch_polyline(origin, destination))
-        )
+    end
+  end
+
+  def validate_status(promo_code) do
+    case Map.get(promo_code, :status) do
+      true -> promo_code
+      false -> :deactivated
     end
   end
 
