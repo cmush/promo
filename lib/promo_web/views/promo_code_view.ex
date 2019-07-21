@@ -18,6 +18,18 @@ defmodule PromoWeb.PromoCodeView do
     %{error: "promo_code_invalid__status_inactive"}
   end
 
+  def render("promo_code_invalid__status_expired.json", %{promo_code: _promo_code}) do
+    %{error: "promo_code_invalid__status_expired"}
+  end
+
+  def render("promo_code_invalid__travel_distance_exceeds_radius_allowed.json", %{promo_code: _promo_code}) do
+    %{error: "promo_code_invalid__travel_distance_exceeds_radius_allowed"}
+  end
+
+  def render("promo_code_invalid__ride_amount_exceeded.json", %{promo_code: _promo_code}) do
+    %{error: "promo_code_invalid__ride_amount_exceeded"}
+  end
+
   def render("promo_code.json", %{promo_code: promo_code}) do
     %{
       id: promo_code.id,
