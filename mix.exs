@@ -39,9 +39,11 @@ defmodule Promo.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
-      {:phoenix_html, "~> 2.13"}
+      {:phoenix_html, "~> 2.13"},
+      {:httpoison, "~> 1.5"},
+      {:johanna, "~> 0.2.7"}
     ]
   end
 
