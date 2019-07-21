@@ -95,16 +95,11 @@ defmodule PromoWeb.PromoCodeController do
   def validate_not_expired(:deactivated), do: :deactivated
 
   def validate_not_expired(%PromoCode{expiry_date: expiry_date} = promo_code) do
-    case expired?(expiry_date) do
-      false -> promo_code
-      true -> :expired
+    if Date.diff(expiry_date, Date.utc_today()) >= 0 do
+      promo_code
+    else
+      :expired
     end
-  end
-
-  def expired?(expiry_date) do
-    IO.inspect(expiry_date, label: "promo_code_expired?/1 expiry_date")
-    # TODO: 
-    false
   end
 
   def validate_within_allowed_radius(:deactivated, _origin, _destination), do: :deactivated
