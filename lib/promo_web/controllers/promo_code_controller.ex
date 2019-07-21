@@ -52,6 +52,8 @@ defmodule PromoWeb.PromoCodeController do
 
     promo_code
     |> validate_status()
+    |> validate_not_expired()
+    |> validate_within_allowed_radius(origin, destination)
     |> case do
       :deactivated ->
         render(
@@ -60,11 +62,25 @@ defmodule PromoWeb.PromoCodeController do
           promo_code: %{}
         )
 
+      :expired ->
+        render(
+          conn,
+          "promo_code_invalid__status_expired.json",
+          promo_code: %{}
+        )
+
+      :travel_distance_exceeds_radius_allowed ->
+        render(
+          conn,
+          "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
+          promo_code: %{}
+        )
+
       promo_code ->
         render(
           conn,
           "promo_code_valid.json",
-          promo_code: Map.put(promo_code, :polyline, fetch_polyline(origin, destination))
+          promo_code: promo_code
         )
     end
   end
@@ -76,7 +92,45 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
-  def fetch_polyline(_origin, _destination) do
-    "dummy polyline"
+  def validate_not_expired(:deactivated), do: :deactivated
+
+  def validate_not_expired(%PromoCode{expiry_date: expiry_date} = promo_code) do
+    case expired?(expiry_date) do
+      false -> promo_code
+      true -> :expired
+    end
+  end
+
+  def expired?(expiry_date) do
+    IO.inspect(expiry_date, label: "promo_code_expired?/1 expiry_date")
+    # TODO: 
+    false
+  end
+
+  def validate_within_allowed_radius(:deactivated, _origin, _destination), do: :deactivated
+  def validate_within_allowed_radius(:expired, _origin, _destination), do: :expired
+
+  def validate_within_allowed_radius(
+        %PromoCode{radius: allowed_radius} = promo_code,
+        origin,
+        destination
+      ) do
+    %{
+      "radius" => distance_from_destination,
+      "polyline" => polyline
+    } = gmaps_api_fetch_polyline(origin, destination)
+
+    case distance_from_destination <= allowed_radius do
+      false -> Map.put(promo_code, :polyline, polyline)
+      true -> :travel_distance_exceeds_radius_allowed
+    end
+  end
+
+  def gmaps_api_fetch_polyline(_origin, _destination) do
+    %{
+      # TODO: sample hard coded radius & polyline
+      "radius" => 3.5,
+      "polyline" => "sample polyline"
+    }
   end
 end
