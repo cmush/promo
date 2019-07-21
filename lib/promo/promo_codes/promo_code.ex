@@ -8,6 +8,7 @@ defmodule Promo.PromoCodes.PromoCode do
     field :radius, :float
     field :ride_amount, :float
     field :status, :boolean, default: false
+    field :polyline, :string, virtual: true
 
     timestamps()
   end
