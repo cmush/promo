@@ -11,9 +11,10 @@ defmodule Promo.Application do
       # Start the Ecto repository
       Promo.Repo,
       # Start the endpoint when the application starts
-      PromoWeb.Endpoint
+      PromoWeb.Endpoint,
+      # Start the gmaps http client
+      {HttpClient.GmapsClient, Application.get_env(:promo, :gmaps_client_config)}
       # Starts a worker by calling: Promo.Worker.start_link(arg)
-      # {Promo.Worker, arg},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
