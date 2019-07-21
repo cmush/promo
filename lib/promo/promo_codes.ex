@@ -55,6 +55,29 @@ defmodule Promo.PromoCodes do
   def get_promo_code!(id), do: Repo.get!(PromoCode, id)
 
   @doc """
+  Gets a single promo_code using its p_code.
+
+  Raises `Ecto.NoResultsError` if the Promo code does not exist.
+
+  ## Examples
+
+      iex> get_promo_code_by_p_code("SBPC_SEED_1")
+      %PromoCode{}
+
+      iex> get_promo_code_by_p_code("UNKOWN_CODE")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_promo_code_by_p_code(p_code) do
+    Promo.Repo.one(
+      from(
+        pc in PromoCode,
+        where: pc.p_code == ^p_code
+      )
+    )
+  end
+
+  @doc """
   Creates a promo_code.
 
   ## Examples
