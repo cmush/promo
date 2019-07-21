@@ -124,7 +124,7 @@ defmodule PromoWeb.PromoCodeController do
   def gmaps_api_fetch_polyline(_origin, _destination) do
     %{
       # TODO: sample hard coded radius & polyline
-      "radius" => 3.5,
+      "radius" => 2,
       "polyline" => "sample polyline"
     }
   end
