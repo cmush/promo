@@ -21,6 +21,12 @@ defmodule PromoWeb.Router do
     pow_routes()
   end
 
+  scope "/", PromoWeb do
+    pipe_through :browser
+
+    get "/", PageController, :index
+  end
+  
   scope "/api", PromoWeb do
     pipe_through :api
     post "/promo_codes", PromoCodeController, :create, except: [:new, :edit]
