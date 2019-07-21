@@ -38,15 +38,15 @@ config :promo, PromoWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-# config :promo, PromoWeb.Endpoint,
-#   live_reload: [
-#     patterns: [
-#       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-#       ~r"priv/gettext/.*(po)$",
-#       ~r"lib/promo_web/{live,views}/.*(ex)$",
-#       ~r"lib/promo_web/templates/.*(eex)$"
-#     ]
-#   ]
+config :promo, PromoWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/gettext/.*(po)$",
+      ~r"lib/promo_web/{live,views}/.*(ex)$",
+      ~r"lib/promo_web/templates/.*(eex)$"
+    ]
+  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
