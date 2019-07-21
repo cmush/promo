@@ -40,5 +40,7 @@ defmodule PromoWeb.Endpoint do
     key: "_promo_key",
     signing_salt: "EYcdXfV6"
 
+  plug Pow.Plug.Session, otp_app: :promo
+
   plug PromoWeb.Router
 end
