@@ -15,7 +15,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
     p_code: "SBPC_TEST_1_UPDATE",
     ride_amount: 300.00,
     expiry_date: Date.from_iso8601!("2019-09-19"),
-    status: true,
+    status: false,
     radius: 2.5
   }
   @invalid_attrs %{
@@ -35,9 +35,29 @@ defmodule PromoWeb.PromoCodeControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index" do
+  describe "list all promo codes" do
     test "lists all promo_codes", %{conn: conn} do
       conn = get(conn, Routes.promo_code_path(conn, :index))
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "lists all active (true) promo_codes", %{conn: conn} do
+      conn =
+        get(conn, Routes.promo_code_path(conn, :show_where_status, true),
+          # promo_code status = true
+          promo_code: @create_attrs
+        )
+
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "lists all inactive (false) promo_codes", %{conn: conn} do
+      conn =
+        get(conn, Routes.promo_code_path(conn, :show_where_status, false),
+          # promo_code status = false
+          promo_code: @update_attrs
+        )
+
       assert json_response(conn, 200)["data"] == []
     end
   end

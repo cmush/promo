@@ -26,6 +26,7 @@ defmodule PromoWeb.PromoCodeController do
     render(conn, "show.json", promo_code: promo_code)
   end
 
+  @spec show_where_status(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show_where_status(conn, %{"status" => status}) do
     promo_codes = PromoCodes.list_promo_codes(status)
     render(conn, "index.json", promo_codes: promo_codes)
@@ -48,6 +49,7 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
+  @spec validate(Plug.Conn.t(), map) :: Plug.Conn.t()
   def validate(conn, %{
         "p_code" => p_code,
         "origin" => %{
@@ -103,6 +105,7 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
+  @spec validate_status(map) :: :deactivated | map
   def validate_status(promo_code) do
     case Map.get(promo_code, :status) do
       true -> promo_code
@@ -110,6 +113,8 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
+  @spec validate_not_expired(:deactivated | Promo.PromoCodes.PromoCode.t()) ::
+          :deactivated | :expired | Promo.PromoCodes.PromoCode.t()
   def validate_not_expired(:deactivated), do: :deactivated
 
   def validate_not_expired(%PromoCode{expiry_date: expiry_date} = promo_code) do
@@ -120,6 +125,15 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
+  @spec validate_within_allowed_radius(
+          :deactivated | :expired | Promo.PromoCodes.PromoCode.t(),
+          any,
+          any
+        ) ::
+          :deactivated
+          | :expired
+          | :travel_distance_exceeds_radius_allowed
+          | Promo.PromoCodes.PromoCode.t()
   def validate_within_allowed_radius(:deactivated, _origin, _destination), do: :deactivated
   def validate_within_allowed_radius(:expired, _origin, _destination), do: :expired
 
@@ -140,6 +154,7 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
+  @spec get_distance_and_polyline(any, any) :: %{optional(<<_::64>>) => any}
   def get_distance_and_polyline(origin, destination) do
     resp = GmapsClient.fetch_directions(origin, destination)
     [routes] = resp.routes
@@ -151,6 +166,7 @@ defmodule PromoWeb.PromoCodeController do
     }
   end
 
+  @spec meters_to_kilometers(number) :: float
   def meters_to_kilometers(distance_in_meters) do
     Float.round(distance_in_meters / 1000, 1)
   end
