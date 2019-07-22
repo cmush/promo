@@ -73,6 +73,7 @@ defmodule HttpClient.Utils do
   end
 
   def pair({:items, value}) when is_list(value), do: value
+  
 
   # Check HTTP response is good for further processing based on code
   def http_resp_ok?({200, resp_body}), do: resp_body
