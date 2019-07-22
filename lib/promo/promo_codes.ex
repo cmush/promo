@@ -23,7 +23,7 @@ defmodule Promo.PromoCodes do
 
   @doc """
   Returns the list of promo_codes depending on status supplied
-  status can be: is true (active) or false (inactive).
+  status can be: true (active) or false (inactive).
 
   ## Examples
 
