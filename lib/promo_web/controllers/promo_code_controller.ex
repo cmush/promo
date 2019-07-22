@@ -3,6 +3,7 @@ defmodule PromoWeb.PromoCodeController do
 
   alias Promo.PromoCodes
   alias Promo.PromoCodes.PromoCode
+  alias HttpClient.GmapsClient
 
   action_fallback PromoWeb.FallbackController
 
@@ -111,9 +112,10 @@ defmodule PromoWeb.PromoCodeController do
         destination
       ) do
     %{
-      "radius" => distance_from_destination,
+      "distance" => distance_from_destination,
+      # overview polyline
       "polyline" => polyline
-    } = gmaps_api_fetch_polyline(origin, destination)
+    } = get_distance_and_polyline(origin, destination)
 
     case distance_from_destination <= allowed_radius do
       false -> Map.put(promo_code, :polyline, polyline)
@@ -121,11 +123,18 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
-  def gmaps_api_fetch_polyline(_origin, _destination) do
+  def get_distance_and_polyline(origin, destination) do
+    resp = GmapsClient.fetch_directions(origin, destination)
+    [routes] = resp.routes
+    [legs] = routes.legs
+
     %{
-      # TODO: sample hard coded radius & polyline
-      "radius" => 2,
-      "polyline" => "sample polyline"
+      "distance" => meters_to_kilometers(legs.distance.value),
+      "polyline" => routes.overview_polyline
     }
+  end
+
+  def meters_to_kilometers(distance_in_meters) do
+    Float.round(distance_in_meters / 1000, 1)
   end
 end

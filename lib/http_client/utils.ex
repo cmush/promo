@@ -76,6 +76,13 @@ defmodule HttpClient.Utils do
 
   # Check HTTP response is good for further processing based on code
   def http_resp_ok?({200, resp_body}), do: resp_body
-  def http_resp_ok?({400, _error}), do: %{:nextPageToken => nil}
-  def http_resp_ok?({:error, "service unavailable"}), do: %{:nextPageToken => nil}
+  def http_resp_ok?({400, error_message}), do: {:bad_request, error_message}
+
+  def http_resp_ok?({:error, "service unavailable"}),
+    do: {:service_unavailable, "service unavailable"}
+
+  def http_resp_ok?({code, error_message}) do
+    IO.inspect(code, label: "TODO: handle error code")
+    {:error, error_message}
+  end
 end
