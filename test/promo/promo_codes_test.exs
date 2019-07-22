@@ -36,6 +36,16 @@ defmodule Promo.PromoCodesTest do
       assert PromoCodes.list_promo_codes() == [promo_code]
     end
 
+    test "list_promo_codes/1 returns all promo_codes status `true`" do
+      promo_code = promo_code_fixture(@valid_attrs) # status here is true
+      assert PromoCodes.list_promo_codes(true) == [promo_code]
+    end
+
+    test "list_promo_codes/1 returns all promo_codes status `false`" do
+      promo_code = promo_code_fixture(@update_attrs) # status here is false
+      assert PromoCodes.list_promo_codes(false) == [promo_code]
+    end
+
     test "get_promo_code!/1 returns the promo_code with given id" do
       promo_code = promo_code_fixture()
       assert PromoCodes.get_promo_code!(promo_code.id) == promo_code
