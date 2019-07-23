@@ -6,6 +6,8 @@ defmodule PromoWeb.FallbackController do
   """
   use PromoWeb, :controller
 
+  @promo_validate_state [:deactivated, :expired, :distance_to_cover_exceeds_radius_allowed]
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
@@ -18,5 +20,12 @@ defmodule PromoWeb.FallbackController do
     |> put_status(:not_found)
     |> put_view(PromoWeb.ErrorView)
     |> render(:"404")
+  end
+
+  def call(conn, state) when state in @promo_validate_state do
+    conn
+    |> put_status(203)
+    |> put_view(PromoWeb.ErrorView)
+    |> render("validation_error.json", state: state)
   end
 end

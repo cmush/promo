@@ -2,8 +2,11 @@ defmodule PromoWeb.PromoCodeController do
   require Logger
   use PromoWeb, :controller
 
-  alias Promo.PromoCodes
-  alias Promo.PromoCodes.PromoCode
+  alias Promo.{
+    PromoCodes,
+    PromoCodes.PromoCode
+  }
+
   alias HttpClient.GmapsClient
 
   action_fallback PromoWeb.FallbackController
@@ -52,34 +55,12 @@ defmodule PromoWeb.PromoCodeController do
 
   @spec validate(Plug.Conn.t(), map) :: Plug.Conn.t()
   def validate(conn, request) do
-    case validate(request) do
-      :deactivated ->
-        render(
-          conn,
-          "promo_code_invalid__status_inactive.json",
-          promo_code: %{}
-        )
-
-      :expired ->
-        render(
-          conn,
-          "promo_code_invalid__status_expired.json",
-          promo_code: %{}
-        )
-
-      :distance_to_cover_exceeds_radius_allowed ->
-        render(
-          conn,
-          "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
-          promo_code: %{}
-        )
-
-      promo_code ->
-        render(
-          conn,
-          "promo_code_valid.json",
-          promo_code: promo_code
-        )
+    with(%PromoCode{} = promo_code <- validate(request)) do
+      render(
+        conn,
+        "validation_result.json",
+        promo_code: promo_code
+      )
     end
   end
 
@@ -96,7 +77,7 @@ defmodule PromoWeb.PromoCodeController do
            "place" => _dest_place
          }
        }) do
-    # promo_code 
+    # promo_code
     PromoCodes.get_promo_code_by_p_code(p_code)
     |> validate_state()
     |> validate_not_expired()

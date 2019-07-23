@@ -13,4 +13,30 @@ defmodule PromoWeb.ErrorView do
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
+
+  def render("validation_error.json", %{state: state}) do
+    validation_error(state)
+  end
+
+  @spec validation_error(
+          :deactivated
+          | :distance_to_cover_exceeds_radius_allowed
+          | :estimated_fare_exceeds_ride_amount
+          | :expired
+        ) :: %{error: <<_::64, _::_*8>>}
+  def validation_error(:deactivated) do
+    %{error: "promo_code_invalid__status_inactive"}
+  end
+
+  def validation_error(:expired) do
+    %{error: "promo_code_invalid__status_expired"}
+  end
+
+  def validation_error(:distance_to_cover_exceeds_radius_allowed) do
+    %{error: "promo_code_invalid__travel_distance_exceeds_radius_allowed"}
+  end
+
+  def validation_error(:estimated_fare_exceeds_ride_amount) do
+    %{error: "promo_code_invalid__allowed_ride_amount_exceeded"}
+  end
 end
