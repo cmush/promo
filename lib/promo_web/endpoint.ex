@@ -18,6 +18,8 @@ defmodule PromoWeb.Endpoint do
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
+    plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
 
@@ -39,6 +41,8 @@ defmodule PromoWeb.Endpoint do
     store: :cookie,
     key: "_promo_key",
     signing_salt: "EYcdXfV6"
+
+  plug Pow.Plug.Session, otp_app: :promo
 
   plug PromoWeb.Router
 end

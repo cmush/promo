@@ -11,6 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 alias Promo.Repo
 alias Promo.PromoCodes.PromoCode
+alias Promo.Users.User
 
 # expiry_date = %Ecto.Date{year: 2014, month: 4, day: 17}
 # expiry_date = Date.from_iso8601!("2014-04-17")
@@ -53,4 +54,10 @@ Repo.insert!(%PromoCode{
   expiry_date: Date.from_iso8601!("2019-11-19"),
   status: false,
   radius: 3.00
+})
+
+Repo.insert!(%User{
+  email: "testuser@example.com",
+  password: "secret1234",
+  confirm_password: "secret1234"
 })

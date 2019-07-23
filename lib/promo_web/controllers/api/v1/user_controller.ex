@@ -1,0 +1,10 @@
+defmodule PromoWeb.API.V1.UserController do
+  use PromoWeb, :controller
+
+  action_fallback PromoWeb.FallbackController
+
+  def index(conn, _params) do
+    users = [ExOauth2Provider.Plug.current_resource_owner(conn)]
+    render(conn, "index.json", users: users)
+  end
+end

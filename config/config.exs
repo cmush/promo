@@ -30,6 +30,14 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :promo, :pow,
+  user: Promo.Users.User,
+  repo: Promo.Repo
+
+config :promo, ExOauth2Provider,
+  repo: Promo.Repo,
+  resource_owner: Promo.Users.User
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

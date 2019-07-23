@@ -42,6 +42,9 @@ defmodule Promo.MixProject do
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:phoenix_html, "~> 2.13"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:pow, "~> 1.0.11"},
+      {:phoenix_oauth2_provider, "~> 0.5.1"},
       {:httpoison, "~> 1.5"}
     ]
   end
