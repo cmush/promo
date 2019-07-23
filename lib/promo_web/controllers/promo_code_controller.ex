@@ -96,10 +96,9 @@ defmodule PromoWeb.PromoCodeController do
            "place" => _dest_place
          }
        }) do
-    promo_code = PromoCodes.get_promo_code_by_p_code(p_code)
-
-    promo_code
-    |> validate_status()
+    # promo_code 
+    PromoCodes.get_promo_code_by_p_code(p_code)
+    |> validate_state()
     |> validate_not_expired()
     |> validate_within_allowed_radius(
       # origin coordinates
@@ -109,18 +108,15 @@ defmodule PromoWeb.PromoCodeController do
     )
   end
 
-  @spec validate_status(map) :: :deactivated | map
-  def validate_status(promo_code) do
+  @spec validate_state(map) :: :deactivated | map
+  def validate_state(promo_code) do
     case Map.get(promo_code, :status) do
       true -> promo_code
       false -> :deactivated
     end
   end
 
-  @spec validate_not_expired(:deactivated | Promo.PromoCodes.PromoCode.t()) ::
-          :deactivated | :expired | Promo.PromoCodes.PromoCode.t()
-  def validate_not_expired(:deactivated), do: :deactivated
-
+  @spec validate_not_expired(any) :: any
   def validate_not_expired(%PromoCode{expiry_date: expiry_date} = promo_code) do
     if Date.diff(expiry_date, Date.utc_today()) >= 0 do
       promo_code
@@ -129,18 +125,9 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
-  @spec validate_within_allowed_radius(
-          :deactivated | :expired | Promo.PromoCodes.PromoCode.t(),
-          any,
-          any
-        ) ::
-          :deactivated
-          | :expired
-          | :travel_distance_exceeds_radius_allowed
-          | Promo.PromoCodes.PromoCode.t()
-  def validate_within_allowed_radius(:deactivated, _origin, _destination), do: :deactivated
-  def validate_within_allowed_radius(:expired, _origin, _destination), do: :expired
+  def validate_not_expired(state), do: state
 
+  @spec validate_within_allowed_radius(any, any, any) :: any
   def validate_within_allowed_radius(
         %PromoCode{radius: allowed_radius} = promo_code,
         origin,
@@ -164,6 +151,8 @@ defmodule PromoWeb.PromoCodeController do
       Map.put(promo_code, :polyline, polyline)
     end
   end
+
+  def validate_within_allowed_radius(state, _origin, _destination), do: state
 
   @spec get_distance_and_polyline(any, any) :: %{optional(<<_::64>>) => any}
   def get_distance_and_polyline(origin, destination) do
