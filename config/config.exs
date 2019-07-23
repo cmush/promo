@@ -8,7 +8,12 @@
 use Mix.Config
 
 config :promo,
-  ecto_repos: [Promo.Repo]
+  ecto_repos: [Promo.Repo],
+  gmaps_client_config: %{
+    :base_url__directions => "https://maps.googleapis.com/maps/api/directions/json",
+    :base_url__distance_matrix => "https://maps.googleapis.com/maps/api/distancematrix/json",
+    :api_key => "AIzaSyC1HhgY5bXe6sWt1gn8Hl3ZCFdrfeYwmjw"
+  }
 
 # Configures the endpoint
 config :promo, PromoWeb.Endpoint,

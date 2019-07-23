@@ -3,6 +3,7 @@ defmodule PromoWeb.PromoCodeController do
 
   alias Promo.PromoCodes
   alias Promo.PromoCodes.PromoCode
+  alias HttpClient.GmapsClient
 
   action_fallback PromoWeb.FallbackController
 
@@ -47,13 +48,30 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
-  def validate(conn, %{"p_code" => p_code, "origin" => origin, "destination" => destination}) do
+  def validate(conn, %{
+        "p_code" => p_code,
+        "origin" => %{
+          "latitude" => or_latitude,
+          "longitude" => or_longitude,
+          "place" => _or_place
+        },
+        "destination" => %{
+          "latitude" => dest_latitude,
+          "longitude" => dest_longitude,
+          "place" => _dest_place
+        }
+      }) do
     promo_code = PromoCodes.get_promo_code_by_p_code(p_code)
 
     promo_code
     |> validate_status()
     |> validate_not_expired()
-    |> validate_within_allowed_radius(origin, destination)
+    |> validate_within_allowed_radius(
+      # origin coordinates
+      or_latitude <> "," <> or_longitude,
+      # destination coordinates
+      dest_latitude <> "," <> dest_longitude
+    )
     |> case do
       :deactivated ->
         render(
@@ -111,9 +129,10 @@ defmodule PromoWeb.PromoCodeController do
         destination
       ) do
     %{
-      "radius" => distance_from_destination,
+      "distance" => distance_from_destination,
+      # overview polyline
       "polyline" => polyline
-    } = gmaps_api_fetch_polyline(origin, destination)
+    } = get_distance_and_polyline(origin, destination)
 
     case distance_from_destination <= allowed_radius do
       false -> Map.put(promo_code, :polyline, polyline)
@@ -121,11 +140,18 @@ defmodule PromoWeb.PromoCodeController do
     end
   end
 
-  def gmaps_api_fetch_polyline(_origin, _destination) do
+  def get_distance_and_polyline(origin, destination) do
+    resp = GmapsClient.fetch_directions(origin, destination)
+    [routes] = resp.routes
+    [legs] = routes.legs
+
     %{
-      # TODO: sample hard coded radius & polyline
-      "radius" => 2,
-      "polyline" => "sample polyline"
+      "distance" => meters_to_kilometers(legs.distance.value),
+      "polyline" => routes.overview_polyline
     }
+  end
+
+  def meters_to_kilometers(distance_in_meters) do
+    Float.round(distance_in_meters / 1000, 1)
   end
 end
