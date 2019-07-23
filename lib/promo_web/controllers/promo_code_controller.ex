@@ -50,31 +50,8 @@ defmodule PromoWeb.PromoCodeController do
   end
 
   @spec validate(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def validate(conn, %{
-        "p_code" => p_code,
-        "origin" => %{
-          "latitude" => or_latitude,
-          "longitude" => or_longitude,
-          "place" => _or_place
-        },
-        "destination" => %{
-          "latitude" => dest_latitude,
-          "longitude" => dest_longitude,
-          "place" => _dest_place
-        }
-      }) do
-    promo_code = PromoCodes.get_promo_code_by_p_code(p_code)
-
-    promo_code
-    |> validate_status()
-    |> validate_not_expired()
-    |> validate_within_allowed_radius(
-      # origin coordinates
-      or_latitude <> "," <> or_longitude,
-      # destination coordinates
-      dest_latitude <> "," <> dest_longitude
-    )
-    |> case do
+  def validate(conn, request) do
+    case validate(request) do
       :deactivated ->
         render(
           conn,
@@ -103,6 +80,32 @@ defmodule PromoWeb.PromoCodeController do
           promo_code: promo_code
         )
     end
+  end
+
+  defp validate(%{
+         "p_code" => p_code,
+         "origin" => %{
+           "latitude" => or_latitude,
+           "longitude" => or_longitude,
+           "place" => _or_place
+         },
+         "destination" => %{
+           "latitude" => dest_latitude,
+           "longitude" => dest_longitude,
+           "place" => _dest_place
+         }
+       }) do
+    promo_code = PromoCodes.get_promo_code_by_p_code(p_code)
+
+    promo_code
+    |> validate_status()
+    |> validate_not_expired()
+    |> validate_within_allowed_radius(
+      # origin coordinates
+      or_latitude <> "," <> or_longitude,
+      # destination coordinates
+      dest_latitude <> "," <> dest_longitude
+    )
   end
 
   @spec validate_status(map) :: :deactivated | map
