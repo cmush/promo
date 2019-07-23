@@ -1,4 +1,5 @@
 defmodule PromoWeb.PromoCodeController do
+  require Logger
   use PromoWeb, :controller
 
   alias Promo.PromoCodes
@@ -151,7 +152,13 @@ defmodule PromoWeb.PromoCodeController do
       "polyline" => polyline
     } = get_distance_and_polyline(origin, destination)
 
-    if distance_to_destination > allowed_radius do
+    Logger.debug("distance_to_destination: #{inspect(distance_to_destination)}")
+    Logger.debug("allowed_radius: #{inspect(allowed_radius)}")
+
+    allowed = distance_to_destination > allowed_radius
+    Logger.debug("distance_to_destination > allowed_radius?: #{inspect(allowed)}")
+
+    if allowed do
       :distance_to_cover_exceeds_radius_allowed
     else
       Map.put(promo_code, :polyline, polyline)
