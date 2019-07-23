@@ -66,7 +66,7 @@ defmodule PromoWeb.PromoCodeController do
           promo_code: %{}
         )
 
-      :travel_distance_exceeds_radius_allowed ->
+      :distance_to_cover_exceeds_radius_allowed ->
         render(
           conn,
           "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
@@ -146,14 +146,15 @@ defmodule PromoWeb.PromoCodeController do
         destination
       ) do
     %{
-      "distance" => distance_from_destination,
+      "distance" => distance_to_destination,
       # overview polyline
       "polyline" => polyline
     } = get_distance_and_polyline(origin, destination)
 
-    case distance_from_destination <= allowed_radius do
-      false -> Map.put(promo_code, :polyline, polyline)
-      true -> :travel_distance_exceeds_radius_allowed
+    if distance_to_destination > allowed_radius do
+      :distance_to_cover_exceeds_radius_allowed
+    else
+      Map.put(promo_code, :polyline, polyline)
     end
   end
 
