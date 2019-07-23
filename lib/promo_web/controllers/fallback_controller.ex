@@ -19,4 +19,40 @@ defmodule PromoWeb.FallbackController do
     |> put_view(PromoWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, _) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(PromoWeb.ErrorView)
+    |> render(:"400")
+  end
 end
+
+#   :deactivated ->
+#     render(
+#       conn,
+#       "promo_code_invalid__status_inactive.json",
+#       promo_code: %{}
+#     )
+
+#   :expired ->
+#     render(
+#       conn,
+#       "promo_code_invalid__status_expired.json",
+#       promo_code: %{}
+#     )
+
+#   :travel_distance_exceeds_radius_allowed ->
+#     render(
+#       conn,
+#       "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
+#       promo_code: %{}
+#     )
+
+#   promo_code ->
+#     render(
+#       conn,
+#       "promo_code_valid.json",
+#       promo_code: promo_code
+#     )
+# end

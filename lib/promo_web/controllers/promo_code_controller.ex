@@ -5,7 +5,7 @@ defmodule PromoWeb.PromoCodeController do
   alias Promo.PromoCodes.PromoCode
   alias HttpClient.GmapsClient
 
-  action_fallback PromoWeb.FallbackController
+  action_fallback(PromoWeb.FallbackController)
 
   def index(conn, _params) do
     promo_codes = PromoCodes.list_promo_codes()
@@ -74,36 +74,17 @@ defmodule PromoWeb.PromoCodeController do
       # destination coordinates
       dest_latitude <> "," <> dest_longitude
     )
-    |> case do
-      :deactivated ->
-        render(
-          conn,
-          "promo_code_invalid__status_inactive.json",
-          promo_code: %{}
-        )
 
-      :expired ->
-        render(
-          conn,
-          "promo_code_invalid__status_expired.json",
-          promo_code: %{}
-        )
-
-      :travel_distance_exceeds_radius_allowed ->
-        render(
-          conn,
-          "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
-          promo_code: %{}
-        )
-
-      promo_code ->
-        render(
-          conn,
-          "promo_code_valid.json",
-          promo_code: promo_code
-        )
+    with %PromoCode{} <- promo_code do
+      render(
+        conn,
+        "promo_code_valid.json",
+        promo_code: promo_code
+      )
     end
   end
+
+  def validate(_conn, _), do: nil
 
   @spec validate_status(map) :: :deactivated | map
   def validate_status(promo_code) do
