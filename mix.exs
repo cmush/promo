@@ -7,7 +7,7 @@ defmodule Promo.MixProject do
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix, :gettext, :phoenix_swagger] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -20,7 +20,7 @@ defmodule Promo.MixProject do
   def application do
     [
       mod: {Promo.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :phoenix_swagger]
     ]
   end
 
@@ -46,7 +46,10 @@ defmodule Promo.MixProject do
       {:pow, "~> 1.0.11"},
       {:phoenix_oauth2_provider, "~> 0.5.1"},
       {:httpoison, "~> 1.5"},
-      {:distillery, "~> 2.1"}
+      {:distillery, "~> 2.1"},
+      {:phoenix_swagger, "~> 0.8"},
+      # optional
+      {:ex_json_schema, "~> 0.5"}
     ]
   end
 
