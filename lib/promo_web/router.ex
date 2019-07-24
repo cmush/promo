@@ -67,4 +67,18 @@ defmodule PromoWeb.Router do
 
     resources "/accounts", UserController
   end
+
+  # Swagger stuff
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :promo, swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: Application.spec(:promo, :vsn),
+        title: "Promo"
+      }
+    }
+  end
 end
