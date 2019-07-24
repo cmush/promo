@@ -42,3 +42,6 @@ assets/node_modules/
 /config/*.secret.exs
 
 .elixir_ls/
+
+# env sourcing files
+*_env.sh

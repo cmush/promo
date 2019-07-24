@@ -12,7 +12,7 @@ config :promo,
   gmaps_client_config: %{
     :base_url__directions => "https://maps.googleapis.com/maps/api/directions/json",
     :base_url__distance_matrix => "https://maps.googleapis.com/maps/api/distancematrix/json",
-    :api_key => "AIzaSyC1HhgY5bXe6sWt1gn8Hl3ZCFdrfeYwmjw"
+    :api_key => System.get_env("GMAPS_API_KEY")
   }
 
 # Configures the endpoint
