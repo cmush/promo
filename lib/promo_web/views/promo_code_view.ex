@@ -14,6 +14,10 @@ defmodule PromoWeb.PromoCodeView do
     %{data: render_one(promo_code, PromoCodeView, "valid_promo_code.json")}
   end
 
+  def render("validation_result.json", %{promo_code: promo_code}) do
+    %{data: render_one(promo_code, PromoCodeView, "validation_result__code_valid.json")}
+  end
+
   def render("promo_code.json", %{promo_code: promo_code}) do
     %{
       id: promo_code.id,
@@ -25,7 +29,7 @@ defmodule PromoWeb.PromoCodeView do
     }
   end
 
-  def render("valid_promo_code.json", %{promo_code: promo_code}) do
+  def render("validation_result__code_valid.json", %{promo_code: promo_code}) do
     %{
       id: promo_code.id,
       p_code: promo_code.p_code,

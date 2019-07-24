@@ -19,23 +19,23 @@ alias Promo.Users.User
 Repo.insert!(%PromoCode{
   p_code: "SBPC_SEED_1",
   ride_amount: 200.00,
-  expiry_date: Date.from_iso8601!("2019-07-19"),
+  expiry_date: Date.from_iso8601!("2019-07-25"),
   status: true,
-  radius: 1.50
+  radius: 3.00
 })
 
 Repo.insert!(%PromoCode{
   p_code: "SBPC_SEED_2",
   ride_amount: 300.03,
-  expiry_date: Date.from_iso8601!("2019-08-19"),
+  expiry_date: Date.from_iso8601!("2019-08-25"),
   status: true,
-  radius: 1.00
+  radius: 2.50
 })
 
 Repo.insert!(%PromoCode{
   p_code: "SBPC_SEED_3",
   ride_amount: 400.20,
-  expiry_date: Date.from_iso8601!("2019-09-19"),
+  expiry_date: Date.from_iso8601!("2019-09-22"),
   status: true,
   radius: 2.10
 })
@@ -43,7 +43,7 @@ Repo.insert!(%PromoCode{
 Repo.insert!(%PromoCode{
   p_code: "SBPC_SEED_4",
   ride_amount: 500.45,
-  expiry_date: Date.from_iso8601!("2019-10-19"),
+  expiry_date: Date.from_iso8601!("2019-10-22"),
   status: true,
   radius: 2.00
 })
@@ -51,7 +51,15 @@ Repo.insert!(%PromoCode{
 Repo.insert!(%PromoCode{
   p_code: "SBPC_SEED_5",
   ride_amount: 600.32,
-  expiry_date: Date.from_iso8601!("2019-11-19"),
+  expiry_date: Date.from_iso8601!("2019-11-23"),
+  status: true,
+  radius: 3.00
+})
+
+Repo.insert!(%PromoCode{
+  p_code: "SBPC_SEED_6",
+  ride_amount: 600.32,
+  expiry_date: Date.from_iso8601!("2019-11-23"),
   status: false,
   radius: 3.00
 })

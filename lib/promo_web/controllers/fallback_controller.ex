@@ -6,6 +6,8 @@ defmodule PromoWeb.FallbackController do
   """
   use PromoWeb, :controller
 
+  @promo_validate_state [:deactivated, :expired, :distance_to_cover_exceeds_radius_allowed]
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
@@ -20,39 +22,10 @@ defmodule PromoWeb.FallbackController do
     |> render(:"404")
   end
 
-  def call(conn, _) do
+  def call(conn, state) when state in @promo_validate_state do
     conn
-    |> put_status(:bad_request)
+    |> put_status(203)
     |> put_view(PromoWeb.ErrorView)
-    |> render(:"400")
+    |> render("validation_error.json", state: state)
   end
 end
-
-#   :deactivated ->
-#     render(
-#       conn,
-#       "promo_code_invalid__status_inactive.json",
-#       promo_code: %{}
-#     )
-
-#   :expired ->
-#     render(
-#       conn,
-#       "promo_code_invalid__status_expired.json",
-#       promo_code: %{}
-#     )
-
-#   :travel_distance_exceeds_radius_allowed ->
-#     render(
-#       conn,
-#       "promo_code_invalid__travel_distance_exceeds_radius_allowed.json",
-#       promo_code: %{}
-#     )
-
-#   promo_code ->
-#     render(
-#       conn,
-#       "promo_code_valid.json",
-#       promo_code: promo_code
-#     )
-# end
