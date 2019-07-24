@@ -20,7 +20,8 @@ $ MIX_ENV=dev GMAPS_API_KEY=google-maps-api-key mix phx.server # Start "Promo"
 * leaving `GMAPS_API_KEY=google-maps-api-key` out will cause the HttpClient to 
 behave in an unpredictable manner (crash!).
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and access the api from 
+[`localhost:4000/api`](http://localhost:4000/api).
 
 ## Start Promo in MIX_ENV=prod
 ### Building a vanilla release
@@ -56,7 +57,5 @@ https://hexdocs.pm/distillery/guides/phoenix_walkthrough.html#take-that-release-
 
 ## Known Issues
 * Some pages are exposed on the open internet that shouldn't. They're however protected by username/password/oauth2.0
-* The server continually refuses to start the service on port specified via env variable. 
-To access the service, use the default port `4000`.
 * The original development GMaps API key is contained within the app's commit history 
 (not an issue once reset/changed via the developer console).

@@ -13,6 +13,12 @@ config :promo,
     :base_url__directions => "https://maps.googleapis.com/maps/api/directions/json",
     :base_url__distance_matrix => "https://maps.googleapis.com/maps/api/distancematrix/json",
     :api_key => System.get_env("GMAPS_API_KEY")
+  },
+  swagger_files: %{
+    "priv/static/swagger.json" => [
+      router: PromoWeb.Router,     # phoenix routes will be converted to swagger paths
+      endpoint: PromoWeb.Endpoint  # (optional) endpoint config used to set host, port and https schemes.
+    ]
   }
 
 # Configures the endpoint
