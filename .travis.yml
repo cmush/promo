@@ -2,6 +2,9 @@ language: elixir
 
 elixir: '1.9.0'
 
+otp_release:
+  - '22.0.7'
+
 branches:
   only:
     - master
