@@ -45,7 +45,8 @@ defmodule Promo.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:pow, "~> 1.0.11"},
       {:phoenix_oauth2_provider, "~> 0.5.1"},
-      {:httpoison, "~> 1.5"}
+      {:httpoison, "~> 1.5"},
+      {:distillery, "~> 2.1"}
     ]
   end
 
