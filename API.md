@@ -6,6 +6,8 @@
     * [create](#api-promo_codes-create)
     * [show](#api-promo_codes-show)
     * [create](#api-promo_codes-create)
+    * [update](#api-promo_codes-update)
+    * [delete](#api-promo_codes-delete)
 
 ## API /promo_codes
 ### <a id=api-promo_codes-index></a>index
@@ -24,7 +26,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI67WprgSPmoAAAwE
+x-request-id: FbSiC9RwGAbA6_AAAANC
 ```
 * __Response body:__
 ```json
@@ -62,7 +64,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI6-C9BjckTMAAAxk
+x-request-id: FbSiC9Z7i9gQlCgAAAPC
 ```
 * __Response body:__
 ```json
@@ -99,7 +101,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI6znu4Amr1IAABHD
+x-request-id: FbSiC9Vh0sxI8acAAAOC
 ```
 * __Response body:__
 ```json
@@ -137,8 +139,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI6-8V4B0rPYAABID
-location: /api/promo_codes/865
+x-request-id: FbSiC9WiNykYT4QAAADD
+location: /api/promo_codes/932
 ```
 * __Response body:__
 ```json
@@ -148,7 +150,7 @@ location: /api/promo_codes/865
     "ride_amount": 200.0,
     "radius": 1.5,
     "p_code": "SBPC_TEST_1",
-    "id": 865,
+    "id": 932,
     "expiry_date": "2019-08-19"
   }
 }
@@ -158,7 +160,7 @@ location: /api/promo_codes/865
 #### show promo_code
 ##### Request
 * __Method:__ GET
-* __Path:__ /api/promo_codes/865
+* __Path:__ /api/promo_codes/932
 * __Request headers:__
 ```
 accept: application/json
@@ -170,7 +172,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI7DGtuh0rPYAABIj
+x-request-id: FbSiC9XYx-cYT4QAAAHk
 ```
 * __Response body:__
 ```json
@@ -180,14 +182,14 @@ x-request-id: FbShI7DGtuh0rPYAABIj
     "ride_amount": 200.0,
     "radius": 1.5,
     "p_code": "SBPC_TEST_1",
-    "id": 865,
+    "id": 932,
     "expiry_date": "2019-08-19"
   }
 }
 ```
 
 ### <a id=api-promo_codes-create></a>create
-#### invalid promo_code
+#### invalid promo_code request (blank fields)
 ##### Request
 * __Method:__ POST
 * __Path:__ /api/promo_codes
@@ -215,7 +217,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbShI68TG0iK9E8AAAxE
+x-request-id: FbSiC9SyaJN5Z1EAAADh
 ```
 * __Response body:__
 ```json
@@ -238,5 +240,125 @@ x-request-id: FbShI68TG0iK9E8AAAxE
     ]
   }
 }
+```
+
+### <a id=api-promo_codes-update></a>update
+#### update promo_code details
+##### Request
+* __Method:__ PUT
+* __Path:__ /api/promo_codes/930
+* __Request headers:__
+```
+accept: application/json
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "promo_code": {
+    "status": false,
+    "ride_amount": 300.0,
+    "radius": 2.5,
+    "p_code": "SBPC_TEST_1_UPDATE",
+    "expiry_date": "2019-09-19"
+  }
+}
+```
+
+##### Response
+* __Status__: 200
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+x-request-id: FbSiC86jpL5TJSgAAAKi
+```
+* __Response body:__
+```json
+{
+  "data": {
+    "status": false,
+    "ride_amount": 300.0,
+    "radius": 2.5,
+    "p_code": "SBPC_TEST_1_UPDATE",
+    "id": 930,
+    "expiry_date": "2019-09-19"
+  }
+}
+```
+
+#### attempt to update promo_code with invalid details
+##### Request
+* __Method:__ PUT
+* __Path:__ /api/promo_codes/933
+* __Request headers:__
+```
+accept: application/json
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "promo_code": {
+    "status": null,
+    "ride_amount": null,
+    "radius": null,
+    "p_code": null,
+    "expiry_date": null
+  }
+}
+```
+
+##### Response
+* __Status__: 422
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+x-request-id: FbSiC9ZN_7Ke4UsAAAIE
+```
+* __Response body:__
+```json
+{
+  "errors": {
+    "status": [
+      "can't be blank"
+    ],
+    "ride_amount": [
+      "can't be blank"
+    ],
+    "radius": [
+      "can't be blank"
+    ],
+    "p_code": [
+      "can't be blank"
+    ],
+    "expiry_date": [
+      "can't be blank"
+    ]
+  }
+}
+```
+
+### <a id=api-promo_codes-delete></a>delete
+#### delete promo_code 
+##### Request
+* __Method:__ DELETE
+* __Path:__ /api/promo_codes/931
+* __Request headers:__
+```
+accept: application/json
+```
+
+##### Response
+* __Status__: 204
+* __Response headers:__
+```
+cache-control: max-age=0, private, must-revalidate
+x-request-id: FbSiC9JqQbUldnQAAAMC
+```
+* __Response body:__
+```json
+
 ```
 

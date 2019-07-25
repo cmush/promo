@@ -123,7 +123,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
         conn
         |> post(Routes.promo_code_path(conn, :create), promo_code: @invalid_attrs)
         |> doc(
-          description: "invalid promo_code",
+          description: "invalid promo_code request (blank fields)",
           operation_id: "create"
         )
 
@@ -138,10 +138,15 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn: conn,
       promo_code: %PromoCode{id: id} = promo_code
     } do
-      conn =
-        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @update_attrs)
+      conn_update =
+        conn
+        |> put(Routes.promo_code_path(conn, :update, promo_code), promo_code: @update_attrs)
+        |> doc(
+          description: "update promo_code details",
+          operation_id: "update"
+        )
 
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+      assert %{"id" => ^id} = json_response(conn_update, 200)["data"]
 
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
 
@@ -151,10 +156,15 @@ defmodule PromoWeb.PromoCodeControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, promo_code: promo_code} do
-      conn =
-        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+      conn_update =
+        conn
+        |> put(Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+        |> doc(
+          description: "attempt to update promo_code with invalid details",
+          operation_id: "update"
+        )
 
-      assert json_response(conn, 422)["errors"] != %{}
+      assert json_response(conn_update, 422)["errors"] != %{}
     end
   end
 
@@ -162,7 +172,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
     setup [:create_promo_code]
 
     test "deletes chosen promo_code", %{conn: conn, promo_code: promo_code} do
-      conn = delete(conn, Routes.promo_code_path(conn, :delete, promo_code))
+      conn =
+        conn
+        |> delete(Routes.promo_code_path(conn, :delete, promo_code))
+        |> doc(
+          description: "delete promo_code ",
+          operation_id: "delete"
+        )
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
