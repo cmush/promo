@@ -7,7 +7,8 @@ defmodule PromoWeb.PromoCodeControllerTest do
   @valid__create_attrs %{
     p_code: "SBPC_TEST_1",
     ride_amount: 200.00,
-    expiry_date: Date.to_string(Date.add(Date.utc_today, 2)), # set to 2 days from now since it's always expected to be valid
+    # set to 2 days from now since it's always expected to be valid
+    expiry_date: Date.to_string(Date.add(Date.utc_today(), 2)),
     status: true,
     radius: 3
   }
@@ -222,14 +223,35 @@ defmodule PromoWeb.PromoCodeControllerTest do
   end
 
   describe "validate promo code" do
-    test "scenario 1 - travel_distance_exceeds_radius_allowed", %{conn: conn} do
+    test "scenario 1 - promo code valid for this scenario", %{conn: conn} do
+      post(conn, Routes.promo_code_path(conn, :create), promo_code: @valid__create_attrs)
+
+      conn =
+        conn
+        |> post(Routes.promo_code_path(conn, :validate), @validate_attrs__valid)
+        |> doc(
+          description: "validate promo_code scenario 1 - promo code valid",
+          operation_id: "validate"
+        )
+
+      assert %{
+               "id" => id,
+               "p_code" => p_code,
+               "ride_amount" => ride_amount,
+               "expiry_date" => expiry_date,
+               "status" => status,
+               "radius" => radius
+             } = json_response(conn, 200)["data"]
+    end
+
+    test "scenario 2 - travel_distance_exceeds_radius_allowed", %{conn: conn} do
       post(conn, Routes.promo_code_path(conn, :create), promo_code: @invalid__td_exceeds_ra)
 
       conn =
         conn
         |> post(Routes.promo_code_path(conn, :validate), @validate_attrs__invalid_distance)
         |> doc(
-          description: "validate promo_code scenario 1 - travel_distance_exceeds_radius_allowed",
+          description: "validate promo_code scenario 2 - travel_distance_exceeds_radius_allowed",
           operation_id: "validate"
         )
 

@@ -27,7 +27,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc46yPoDA6_AAAAJi
+x-request-id: FbSpqjmVugjA6_AAAAJD
 ```
 * __Response body:__
 ```json
@@ -65,7 +65,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc4sEm-hTJSgAAAGk
+x-request-id: FbSpqmiulLie4UsAAALj
 ```
 * __Response body:__
 ```json
@@ -102,7 +102,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc4561ugldnQAAAHk
+x-request-id: FbSpqneC-6Cis5UAAAOD
 ```
 * __Response body:__
 ```json
@@ -140,8 +140,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc48GIxB5Z1EAAAKi
-location: /api/promo_codes/1331
+x-request-id: FbSpqjk60JgldnQAAADi
+location: /api/promo_codes/1346
 ```
 * __Response body:__
 ```json
@@ -151,7 +151,7 @@ location: /api/promo_codes/1331
     "ride_amount": 200.0,
     "radius": 3.0,
     "p_code": "SBPC_TEST_1",
-    "id": 1331,
+    "id": 1346,
     "expiry_date": "2019-07-27"
   }
 }
@@ -161,7 +161,7 @@ location: /api/promo_codes/1331
 #### show promo_code
 ##### Request
 * __Method:__ GET
-* __Path:__ /api/promo_codes/1331
+* __Path:__ /api/promo_codes/1346
 * __Request headers:__
 ```
 accept: application/json
@@ -173,7 +173,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc5DigEh5Z1EAAADD
+x-request-id: FbSpqjlnGIgldnQAAAEC
 ```
 * __Response body:__
 ```json
@@ -183,7 +183,7 @@ x-request-id: FbSpc5DigEh5Z1EAAADD
     "ride_amount": 200.0,
     "radius": 3.0,
     "p_code": "SBPC_TEST_1",
-    "id": 1331,
+    "id": 1346,
     "expiry_date": "2019-07-27"
   }
 }
@@ -218,7 +218,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc8P5W8jOZEcAAAED
+x-request-id: FbSpqmltulDOZEcAAAKE
 ```
 * __Response body:__
 ```json
@@ -247,7 +247,7 @@ x-request-id: FbSpc8P5W8jOZEcAAAED
 #### update promo_code details
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/1333
+* __Path:__ /api/promo_codes/1348
 * __Request headers:__
 ```
 accept: application/json
@@ -272,7 +272,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc8Oo1oAQlCgAAAJk
+x-request-id: FbSpqmkXtsgQlCgAAAMj
 ```
 * __Response body:__
 ```json
@@ -282,7 +282,7 @@ x-request-id: FbSpc8Oo1oAQlCgAAAJk
     "ride_amount": 300.0,
     "radius": 2.5,
     "p_code": "SBPC_TEST_1_UPDATE",
-    "id": 1333,
+    "id": 1348,
     "expiry_date": "2019-09-19"
   }
 }
@@ -291,7 +291,7 @@ x-request-id: FbSpc8Oo1oAQlCgAAAJk
 #### attempt to update promo_code with invalid details
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/1334
+* __Path:__ /api/promo_codes/1345
 * __Request headers:__
 ```
 accept: application/json
@@ -316,7 +316,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc8TJ2shV3_oAAAKk
+x-request-id: FbSpqjS_uFhTJSgAAAID
 ```
 * __Response body:__
 ```json
@@ -345,7 +345,7 @@ x-request-id: FbSpc8TJ2shV3_oAAAKk
 #### delete promo_code 
 ##### Request
 * __Method:__ DELETE
-* __Path:__ /api/promo_codes/1335
+* __Path:__ /api/promo_codes/1350
 * __Request headers:__
 ```
 accept: application/json
@@ -356,7 +356,7 @@ accept: application/json
 * __Response headers:__
 ```
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc8UuTaCis5UAAALC
+x-request-id: FbSpqnf32ZgSUqUAAAOj
 ```
 * __Response body:__
 ```json
@@ -364,7 +364,58 @@ x-request-id: FbSpc8UuTaCis5UAAALC
 ```
 
 ### <a id=api-promo_codes-validate></a>validate
-#### validate promo_code scenario 1 - travel_distance_exceeds_radius_allowed
+#### validate promo_code scenario 1 - promo code valid
+##### Request
+* __Method:__ POST
+* __Path:__ /api/promo_codes/validate
+* __Request headers:__
+```
+accept: application/json
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "p_code": "SBPC_TEST_1",
+  "origin": {
+    "place": "Nairobi, Westlands",
+    "longitude": "36.808922",
+    "latitude": "-1.269650"
+  },
+  "destination": {
+    "place": "Nairobi, Upperhill",
+    "longitude": "36.820030",
+    "latitude": "-1.285790"
+  }
+}
+```
+
+##### Response
+* __Status__: 200
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+x-request-id: FbSpqmmye-BV3_oAAANj
+```
+* __Response body:__
+```json
+{
+  "data": {
+    "status": true,
+    "ride_amount": 200.0,
+    "radius": 3.0,
+    "polyline": {
+      "points": "h~vFyft_Fx@u@jArAlAzAn@t@VZVWZWVUx@q@hB{Ap@s@dAqAf@{@l@sA|AgDt@uAp@}@hBgBhA{@xA}@`Am@^O~@a@lAc@xAWjAMnE_@pD]bB[rA[lAe@`Bs@VU@EDILGPEPBFDB@^M|DsAbFqBzIoDdAg@NM@KHSE]Qg@oAcDsA_DNG\\Ox@_@"
+    },
+    "p_code": "SBPC_TEST_1",
+    "id": 1349,
+    "expiry_date": "2019-07-27"
+  }
+}
+```
+
+#### validate promo_code scenario 2 - travel_distance_exceeds_radius_allowed
 ##### Request
 * __Method:__ POST
 * __Path:__ /api/promo_codes/validate
@@ -396,7 +447,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSpc5FhObBI8acAAAIk
+x-request-id: FbSpqjoIgNh5Z1EAAAKj
 ```
 * __Response body:__
 ```json
