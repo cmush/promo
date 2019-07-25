@@ -8,6 +8,7 @@
     * [create](#api-promo_codes-create)
     * [update](#api-promo_codes-update)
     * [delete](#api-promo_codes-delete)
+    * [validate](#api-promo_codes-validate)
 
 ## API /promo_codes
 ### <a id=api-promo_codes-index></a>index
@@ -26,7 +27,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9RwGAbA6_AAAANC
+x-request-id: FbSoVq6u2SgYT4QAAAOk
 ```
 * __Response body:__
 ```json
@@ -64,7 +65,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9Z7i9gQlCgAAAPC
+x-request-id: FbSoVrQpc5Cis5UAAASE
 ```
 * __Response body:__
 ```json
@@ -101,7 +102,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9Vh0sxI8acAAAOC
+x-request-id: FbSoVq8fkKCe4UsAAAPk
 ```
 * __Response body:__
 ```json
@@ -139,8 +140,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9WiNykYT4QAAADD
-location: /api/promo_codes/932
+x-request-id: FbSoVrN8T1hV3_oAAAIC
+location: /api/promo_codes/1321
 ```
 * __Response body:__
 ```json
@@ -150,7 +151,7 @@ location: /api/promo_codes/932
     "ride_amount": 200.0,
     "radius": 1.5,
     "p_code": "SBPC_TEST_1",
-    "id": 932,
+    "id": 1321,
     "expiry_date": "2019-08-19"
   }
 }
@@ -160,7 +161,7 @@ location: /api/promo_codes/932
 #### show promo_code
 ##### Request
 * __Method:__ GET
-* __Path:__ /api/promo_codes/932
+* __Path:__ /api/promo_codes/1321
 * __Request headers:__
 ```
 accept: application/json
@@ -172,7 +173,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9XYx-cYT4QAAAHk
+x-request-id: FbSoVrO31aBV3_oAAAIi
 ```
 * __Response body:__
 ```json
@@ -182,7 +183,7 @@ x-request-id: FbSiC9XYx-cYT4QAAAHk
     "ride_amount": 200.0,
     "radius": 1.5,
     "p_code": "SBPC_TEST_1",
-    "id": 932,
+    "id": 1321,
     "expiry_date": "2019-08-19"
   }
 }
@@ -217,7 +218,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9SyaJN5Z1EAAADh
+x-request-id: FbSoVq0vl-BI8acAAAOE
 ```
 * __Response body:__
 ```json
@@ -246,7 +247,7 @@ x-request-id: FbSiC9SyaJN5Z1EAAADh
 #### update promo_code details
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/930
+* __Path:__ /api/promo_codes/1317
 * __Request headers:__
 ```
 accept: application/json
@@ -271,7 +272,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC86jpL5TJSgAAAKi
+x-request-id: FbSoVGD1xyBTJSgAAALE
 ```
 * __Response body:__
 ```json
@@ -281,7 +282,7 @@ x-request-id: FbSiC86jpL5TJSgAAAKi
     "ride_amount": 300.0,
     "radius": 2.5,
     "p_code": "SBPC_TEST_1_UPDATE",
-    "id": 930,
+    "id": 1317,
     "expiry_date": "2019-09-19"
   }
 }
@@ -290,7 +291,7 @@ x-request-id: FbSiC86jpL5TJSgAAAKi
 #### attempt to update promo_code with invalid details
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/933
+* __Path:__ /api/promo_codes/1320
 * __Request headers:__
 ```
 accept: application/json
@@ -315,7 +316,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9ZN_7Ke4UsAAAIE
+x-request-id: FbSoVrMmY0DOZEcAAARk
 ```
 * __Response body:__
 ```json
@@ -344,7 +345,7 @@ x-request-id: FbSiC9ZN_7Ke4UsAAAIE
 #### delete promo_code 
 ##### Request
 * __Method:__ DELETE
-* __Path:__ /api/promo_codes/931
+* __Path:__ /api/promo_codes/1319
 * __Request headers:__
 ```
 accept: application/json
@@ -355,10 +356,52 @@ accept: application/json
 * __Response headers:__
 ```
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FbSiC9JqQbUldnQAAAMC
+x-request-id: FbSoVq-_fggQlCgAAAQk
 ```
 * __Response body:__
 ```json
 
+```
+
+### <a id=api-promo_codes-validate></a>validate
+#### validate promo_code scenario 1 - travel_distance_exceeds_radius_allowed
+##### Request
+* __Method:__ POST
+* __Path:__ /api/promo_codes/validate
+* __Request headers:__
+```
+accept: application/json
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "p_code": "SBPC_TEST_1",
+  "origin": {
+    "place": "Nairobi, Westlands",
+    "longitude": "36.808922",
+    "latitude": "-1.269650"
+  },
+  "destination": {
+    "place": "Nairobi, Upperhill",
+    "longitude": "36.820030",
+    "latitude": "-1.285790"
+  }
+}
+```
+
+##### Response
+* __Status__: 203
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+x-request-id: FbSoVGQtVygldnQAAANE
+```
+* __Response body:__
+```json
+{
+  "error": "promo_code_invalid__travel_distance_exceeds_radius_allowed"
+}
 ```
 

@@ -25,6 +25,19 @@ defmodule PromoWeb.PromoCodeControllerTest do
     status: nil,
     radius: nil
   }
+  @validate_attrs %{
+    p_code: "SBPC_TEST_1",
+    origin: %{
+      place: "Nairobi, Westlands",
+      latitude: "-1.269650",
+      longitude: "36.808922"
+    },
+    destination: %{
+      place: "Nairobi, Upperhill",
+      latitude: "-1.285790",
+      longitude: "36.820030"
+    }
+  }
 
   def fixture(:promo_code) do
     {:ok, promo_code} = PromoCodes.create_promo_code(@create_attrs)
@@ -179,11 +192,29 @@ defmodule PromoWeb.PromoCodeControllerTest do
           description: "delete promo_code ",
           operation_id: "delete"
         )
+
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
         get(conn, Routes.promo_code_path(conn, :show, promo_code))
       end
+    end
+  end
+
+  describe "validate promo code" do
+    test "scenario 1 - travel_distance_exceeds_radius_allowed", %{conn: conn} do
+      post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+
+      conn =
+        conn
+        |> post(Routes.promo_code_path(conn, :validate), @validate_attrs)
+        |> doc(
+          description: "validate promo_code scenario 1 - travel_distance_exceeds_radius_allowed",
+          operation_id: "validate"
+        )
+
+      assert "promo_code_invalid__travel_distance_exceeds_radius_allowed" =
+               json_response(conn, 203)["error"]
     end
   end
 
