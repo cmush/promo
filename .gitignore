@@ -47,3 +47,4 @@ assets/node_modules/
 *_env.sh
 
 *.iml
+.idea/*

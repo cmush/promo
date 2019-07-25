@@ -37,15 +37,28 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "list all promo codes" do
     test "lists all promo_codes", %{conn: conn} do
-      conn = conn |> get(Routes.promo_code_path(conn, :index)) |> doc
+      conn =
+        conn
+        |> get(Routes.promo_code_path(conn, :index))
+        |> doc(
+          description: "list all promo codes regardless of state",
+          operation_id: "index"
+        )
+
       assert json_response(conn, 200)["data"] == []
     end
 
     test "lists all active (true) promo_codes", %{conn: conn} do
       conn =
-        get(conn, Routes.promo_code_path(conn, :show_where_status, true),
+        conn
+        |> get(
+          Routes.promo_code_path(conn, :show_where_status, true),
           # promo_code status = true
           promo_code: @create_attrs
+        )
+        |> doc(
+          description: "lists all active (true) promo_codes",
+          operation_id: "show_where_status"
         )
 
       assert json_response(conn, 200)["data"] == []
@@ -53,9 +66,15 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
     test "lists all inactive (false) promo_codes", %{conn: conn} do
       conn =
-        get(conn, Routes.promo_code_path(conn, :show_where_status, false),
+        conn
+        |> get(
+          Routes.promo_code_path(conn, :show_where_status, false),
           # promo_code status = false
           promo_code: @update_attrs
+        )
+        |> doc(
+          description: "lists all inactive (false) promo_codes",
+          operation_id: "show_where_status"
         )
 
       assert json_response(conn, 200)["data"] == []
