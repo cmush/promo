@@ -83,7 +83,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "create promo_code" do
     test "renders promo_code when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+      conn_create =
+        conn
+        |> post(Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+        |> doc(
+          description: "create promo_code",
+          operation_id: "create"
+        )
 
       assert %{
                "id" => id,
@@ -92,9 +98,15 @@ defmodule PromoWeb.PromoCodeControllerTest do
                "expiry_date" => expiry_date,
                "status" => status,
                "radius" => radius
-             } = json_response(conn, 201)["data"]
+             } = json_response(conn_create, 201)["data"]
 
-      conn = get(conn, Routes.promo_code_path(conn, :show, id))
+      conn_show =
+        conn
+        |> get(Routes.promo_code_path(conn, :show, id))
+        |> doc(
+          description: "show promo_code",
+          operation_id: "show"
+        )
 
       assert %{
                "id" => id,
@@ -103,11 +115,18 @@ defmodule PromoWeb.PromoCodeControllerTest do
                "expiry_date" => expiry_date,
                "status" => status,
                "radius" => radius
-             } = json_response(conn, 200)["data"]
+             } = json_response(conn_show, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @invalid_attrs)
+      conn =
+        conn
+        |> post(Routes.promo_code_path(conn, :create), promo_code: @invalid_attrs)
+        |> doc(
+          description: "invalid promo_code",
+          operation_id: "create"
+        )
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

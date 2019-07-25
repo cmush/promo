@@ -1,7 +1,7 @@
 defmodule HttpClient.Api do
   @moduledoc false
 
-  @doc"""
+  @doc """
     Send a GET request to the API
 
     ## Examples
@@ -33,11 +33,12 @@ defmodule HttpClient.Api do
       options
     )
     |> case do
-         {:ok, %{body: raw, status_code: code, headers: headers}} ->
-           {code, raw, headers}
-         {:error, %{reason: reason}} ->
-           {:error, reason, []}
-       end
+      {:ok, %{body: raw, status_code: code, headers: headers}} ->
+        {code, raw, headers}
+
+      {:error, %{reason: reason}} ->
+        {:error, reason, []}
+    end
   end
 
   @doc """
@@ -51,22 +52,26 @@ defmodule HttpClient.Api do
   """
   def content_type({code, raw_body, headers}), do: {code, raw_body, content_type(headers)}
   def content_type([]), do: "application/json"
+
   def content_type([{"Content-Type", c_type} | _]),
-      do: c_type
-          |> String.split(";")
-          |> List.first
+    do:
+      c_type
+      |> String.split(";")
+      |> List.first()
+
   def content_type([_ | t]), do: content_type(t)
 
   @doc """
   Parse the body of a HTTP Response according to its type.
   """
   def decode({_code, :nxdomain, _c_type}), do: {:error, "service unavailable"}
+
   def decode({200, raw_body, "application/json"}) do
     raw_body
     |> Jason.decode(keys: :atoms)
     |> case do
-         {:ok, body} -> {200, body}
-         _ -> {:error, raw_body}
-       end
+      {:ok, body} -> {200, body}
+      _ -> {:error, raw_body}
+    end
   end
 end
