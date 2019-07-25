@@ -63,6 +63,7 @@ defmodule HttpClient.Utils do
 
   @spec pair({atom, binary | integer}) :: <<_::8, _::_*8>>
   def pair({_, ""}), do: ""
+  def pair({_, nil}), do: ""
 
   def pair({key, value}) when is_atom(key) and is_binary(value) do
     Atom.to_string(key) <> "=" <> value
@@ -73,7 +74,6 @@ defmodule HttpClient.Utils do
   end
 
   def pair({:items, value}) when is_list(value), do: value
-  
 
   # Check HTTP response is good for further processing based on code
   def http_resp_ok?({200, resp_body}), do: resp_body

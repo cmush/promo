@@ -16,8 +16,10 @@ config :promo,
   },
   swagger_files: %{
     "priv/static/swagger.json" => [
-      router: PromoWeb.Router,     # phoenix routes will be converted to swagger paths
-      endpoint: PromoWeb.Endpoint  # (optional) endpoint config used to set host, port and https schemes.
+      # phoenix routes will be converted to swagger paths
+      router: PromoWeb.Router,
+      # (optional) endpoint config used to set host, port and https schemes.
+      endpoint: PromoWeb.Endpoint
     ]
   }
 

@@ -49,7 +49,10 @@ defmodule Promo.MixProject do
       {:distillery, "~> 2.1"},
       {:phoenix_swagger, "~> 0.8"},
       # optional
-      {:ex_json_schema, "~> 0.5"}
+      {:ex_json_schema, "~> 0.5"},
+      {:bureaucrat, "~> 0.2.5"},
+      # already in mix.lock thanks to older project deps
+      {:poison, "~> 3.0"}
     ]
   end
 
