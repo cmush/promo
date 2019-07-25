@@ -10,7 +10,8 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 port = String.to_integer(System.get_env("PORT") || "4001")
-default_secret_key_base = :crypto.strong_rand_bytes(43) |> Base.encode64
+default_secret_key_base = :crypto.strong_rand_bytes(43) |> Base.encode64()
+
 config :promo, PromoWeb.Endpoint,
   http: [:inet6, port: port || 4001],
   # This is critical for ensuring web-sockets properly authorize.

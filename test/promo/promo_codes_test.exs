@@ -37,12 +37,14 @@ defmodule Promo.PromoCodesTest do
     end
 
     test "list_promo_codes/1 returns all promo_codes status `true`" do
-      promo_code = promo_code_fixture(@valid_attrs) # status here is true
+      # status here is true
+      promo_code = promo_code_fixture(@valid_attrs)
       assert PromoCodes.list_promo_codes(true) == [promo_code]
     end
 
     test "list_promo_codes/1 returns all promo_codes status `false`" do
-      promo_code = promo_code_fixture(@update_attrs) # status here is false
+      # status here is false
+      promo_code = promo_code_fixture(@update_attrs)
       assert PromoCodes.list_promo_codes(false) == [promo_code]
     end
 
