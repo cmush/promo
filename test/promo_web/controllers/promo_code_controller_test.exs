@@ -4,8 +4,15 @@ defmodule PromoWeb.PromoCodeControllerTest do
   alias Promo.PromoCodes
   alias Promo.PromoCodes.PromoCode
 
-  @create_attrs %{
+  @valid__create_attrs %{
     p_code: "SBPC_TEST_1",
+    ride_amount: 200.00,
+    expiry_date: Date.to_string(Date.add(Date.utc_today, 2)), # set to 2 days from now since it's always expected to be valid
+    status: true,
+    radius: 3
+  }
+  @invalid__td_exceeds_ra %{
+    p_code: "SBPC_TEST_2",
     ride_amount: 200.00,
     expiry_date: Date.from_iso8601!("2019-08-19"),
     status: true,
@@ -25,8 +32,21 @@ defmodule PromoWeb.PromoCodeControllerTest do
     status: nil,
     radius: nil
   }
-  @validate_attrs %{
+  @validate_attrs__valid %{
     p_code: "SBPC_TEST_1",
+    origin: %{
+      place: "Nairobi, Westlands",
+      latitude: "-1.269650",
+      longitude: "36.808922"
+    },
+    destination: %{
+      place: "Nairobi, Upperhill",
+      latitude: "-1.285790",
+      longitude: "36.820030"
+    }
+  }
+  @validate_attrs__invalid_distance %{
+    p_code: "SBPC_TEST_2",
     origin: %{
       place: "Nairobi, Westlands",
       latitude: "-1.269650",
@@ -40,7 +60,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
   }
 
   def fixture(:promo_code) do
-    {:ok, promo_code} = PromoCodes.create_promo_code(@create_attrs)
+    {:ok, promo_code} = PromoCodes.create_promo_code(@valid__create_attrs)
     promo_code
   end
 
@@ -67,7 +87,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
         |> get(
           Routes.promo_code_path(conn, :show_where_status, true),
           # promo_code status = true
-          promo_code: @create_attrs
+          promo_code: @valid__create_attrs
         )
         |> doc(
           description: "lists all active (true) promo_codes",
@@ -98,7 +118,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
     test "renders promo_code when data is valid", %{conn: conn} do
       conn_create =
         conn
-        |> post(Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+        |> post(Routes.promo_code_path(conn, :create), promo_code: @valid__create_attrs)
         |> doc(
           description: "create promo_code",
           operation_id: "create"
@@ -203,11 +223,11 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "validate promo code" do
     test "scenario 1 - travel_distance_exceeds_radius_allowed", %{conn: conn} do
-      post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+      post(conn, Routes.promo_code_path(conn, :create), promo_code: @invalid__td_exceeds_ra)
 
       conn =
         conn
-        |> post(Routes.promo_code_path(conn, :validate), @validate_attrs)
+        |> post(Routes.promo_code_path(conn, :validate), @validate_attrs__invalid_distance)
         |> doc(
           description: "validate promo_code scenario 1 - travel_distance_exceeds_radius_allowed",
           operation_id: "validate"
