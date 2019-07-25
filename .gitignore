@@ -45,3 +45,5 @@ assets/node_modules/
 
 # env sourcing files
 *_env.sh
+
+*.iml

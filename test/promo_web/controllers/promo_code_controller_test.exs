@@ -37,7 +37,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "list all promo codes" do
     test "lists all promo_codes", %{conn: conn} do
-      conn = get(conn, Routes.promo_code_path(conn, :index))
+      conn = conn |> get(Routes.promo_code_path(conn, :index)) |> doc
       assert json_response(conn, 200)["data"] == []
     end
 
