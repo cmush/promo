@@ -7,7 +7,7 @@ defmodule Promo.MixProject do
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext, :phoenix_swagger] ++ Mix.compilers(),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:phoenix_swagger],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -20,7 +20,10 @@ defmodule Promo.MixProject do
   def application do
     [
       mod: {Promo.Application, []},
-      extra_applications: [:logger, :runtime_tools, :phoenix_swagger]
+      extra_applications: [
+        :logger, :runtime_tools,
+        :phoenix_swagger
+      ]
     ]
   end
 
@@ -47,12 +50,10 @@ defmodule Promo.MixProject do
       {:phoenix_oauth2_provider, "~> 0.5.1"},
       {:httpoison, "~> 1.5"},
       {:distillery, "~> 2.1"},
-      {:phoenix_swagger, "~> 0.8"},
+      {:phoenix_swagger, "~> 0.8.1"},
       # optional
       {:ex_json_schema, "~> 0.5"},
-      {:bureaucrat, "~> 0.2.5"},
-      # already in mix.lock thanks to older project deps
-      {:poison, "~> 3.0"}
+      {:bureaucrat, "~> 0.2.5"}
     ]
   end
 
@@ -66,7 +67,8 @@ defmodule Promo.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      swagger: ["phx.swagger.generate priv/static/swagger.json"]
     ]
   end
 end

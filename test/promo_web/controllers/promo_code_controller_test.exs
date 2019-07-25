@@ -1,5 +1,6 @@
 defmodule PromoWeb.PromoCodeControllerTest do
   use PromoWeb.ConnCase
+  use PhoenixSwagger.SchemaTest, "priv/static/swagger.json"
 
   alias Promo.PromoCodes
   alias Promo.PromoCodes.PromoCode
@@ -36,10 +37,11 @@ defmodule PromoWeb.PromoCodeControllerTest do
   end
 
   describe "list all promo codes" do
-    test "lists all promo_codes", %{conn: conn} do
+    test "lists all promo_codes", %{conn: conn, swagger_schema: schema} do
       conn =
         conn
         |> get(Routes.promo_code_path(conn, :index))
+        |> validate_resp_schema(schema, "PromoCodesResponse")
         |> doc(
           description: "list all promo codes regardless of state",
           operation_id: "index"

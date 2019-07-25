@@ -1,5 +1,6 @@
 defmodule PromoWeb.PromoCodeController do
   require Logger
+  use PhoenixSwagger
   use PromoWeb, :controller
 
   alias Promo.{
@@ -10,6 +11,93 @@ defmodule PromoWeb.PromoCodeController do
   alias HttpClient.GmapsClient
 
   action_fallback(PromoWeb.FallbackController)
+
+#   ```json
+# {
+#   "promo_code": {
+#     "status": true,
+#     "ride_amount": 200.0,
+#     "radius": 1.5,
+#     "p_code": "SBPC_TEST_1",
+#     "expiry_date": "2019-08-19"
+#   }
+# }
+# ```
+
+  def swagger_definitions do
+    %{
+      PromoCode:
+        swagger_schema do
+          title("PromoCode")
+          description("A PromoCode")
+
+          properties do
+            status(:boolean, "Current state of the Promo Code")
+            ride_amount(:float, "Ride Amount")
+            radius(:float, "Ride Radius (free distance)")
+            p_code(:string, "Unique PromoCode")
+            expiry_date(:string, "Date of Expiry", format: :datetime)
+          end
+
+          example(%{
+            promo_code: %{
+              status: true,
+              ride_amount: 200.0,
+              radius: 1.5,
+              p_code: "SBPC_TEST_1",
+              expiry_date: "2019-08-19"
+            }
+          })
+        end,
+      PromoCodeRequest:
+        swagger_schema do
+          title("PromoCodeRequest")
+          description("POST body for creating a promo_code")
+          property(:promo_code, Schema.ref(:PromoCode), "The promo_code details")
+        end,
+      PromoCodeResponse:
+        swagger_schema do
+          title("PromoCodeResponse")
+          description("Response schema for single promo_code")
+          property(:data, Schema.ref(:PromoCode), "The promo_code details")
+        end,
+        PromoCodesResponse:
+        swagger_schema do
+          title("PromoCodesResponse")
+          description("Response schema for all promo codes in database")
+          property(:data, Schema.array(:PromoCode), "The promo_codes details")
+        end
+    }
+  end
+
+  swagger_path(:index) do
+    get("/api/promo_codes")
+    summary("List all available Promo Codes")
+    description("all promo codes (regardless of state) in the database")
+    produces("application/json")
+    deprecated(false)
+
+    response(200, "OK", Schema.ref(:PromoCodesResponse),
+      example: %{
+        data: [
+          %{
+            status: true,
+            ride_amount: 200.0,
+            radius: 1.5,
+            p_code: "SBPC_TEST_1",
+            expiry_date: "2019-08-19"
+          },
+          %{
+            status: false,
+            ride_amount: 100.0,
+            radius: 3.5,
+            p_code: "SBPC_TEST_2",
+            expiry_date: "2019-06-19"
+          }
+        ]
+      }
+    )
+  end
 
   def index(conn, _params) do
     promo_codes = PromoCodes.list_promo_codes()
