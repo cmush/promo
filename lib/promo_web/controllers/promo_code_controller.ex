@@ -33,8 +33,8 @@ defmodule PromoWeb.PromoCodeController do
 
           properties do
             status(:boolean, "Current state of the Promo Code")
-            ride_amount(:float, "Ride Amount")
-            radius(:float, "Ride Radius (free distance)")
+            ride_amount(:number, "Ride Amount")
+            radius(:number, "Ride Radius (free distance)")
             p_code(:string, "Unique PromoCode")
             expiry_date(:string, "Date of Expiry", format: :datetime)
           end
