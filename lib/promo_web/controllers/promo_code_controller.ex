@@ -6,6 +6,11 @@ defmodule PromoWeb.PromoCodeController do
 
   action_fallback PromoWeb.FallbackController
 
+  def index(conn, %{"validity" => "active"}) do
+    promo_codes = PromoCodes.list_valid_promo_codes()
+    render(conn, "index.json", promo_codes: promo_codes)
+  end
+
   def index(conn, _params) do
     promo_codes = PromoCodes.list_promo_codes()
     render(conn, "index.json", promo_codes: promo_codes)

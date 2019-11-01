@@ -69,6 +69,11 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn = get(conn, Routes.promo_code_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
+
+    test "lists all valid promo_codes (promo codes where validity == active)", %{conn: conn} do
+      conn = get(conn, Routes.promo_code_path(conn, :index, validity: "active"))
+      assert json_response(conn, 200)["data"] == []
+    end
   end
 
   describe "create promo_code" do
