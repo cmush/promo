@@ -1,8 +1,8 @@
 defmodule PromoWeb.PromoCodeController do
   use PromoWeb, :controller
 
-  alias Promo.PromoCodes
-  alias Promo.PromoCodes.PromoCode
+  alias Promo.{PromoCodes, EventLocations}
+  alias Promo.{PromoCodes.PromoCode, EventLocations.EventLocation}
 
   action_fallback PromoWeb.FallbackController
 
@@ -16,13 +16,33 @@ defmodule PromoWeb.PromoCodeController do
     render(conn, "index.json", promo_codes: promo_codes)
   end
 
-  def create(conn, %{"promo_code" => promo_code_params}) do
-    with {:ok, %PromoCode{} = promo_code} <- PromoCodes.create_promo_code(promo_code_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.promo_code_path(conn, :show, promo_code))
-      |> render("show.json", promo_code: promo_code)
+  def create(conn, %{
+        "promo_code" => %{"event_location" => event_location_params} = promo_code_params
+      }) do
+    with {:ok, %EventLocation{} = event_location} <-
+           EventLocations.create_event_location(event_location_params) do
+      promo_code_params =
+        promo_code_params
+        |> Map.put("p_code", code_prefix() <> "-" <> random_string(5))
+        |> Map.put("event_location_id", event_location.id)
+
+      with {:ok, %PromoCode{} = promo_code} <-
+             PromoCodes.create_promo_code(promo_code_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.promo_code_path(conn, :show, promo_code))
+        |> render("show.json", promo_code: promo_code)
+      end
     end
+  end
+
+  def random_string(length) do
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length)
+  end
+
+  def code_prefix do
+    # TODO: should be fetched from the db, should be configurable on admin dashboard
+    "KaziSafe"
   end
 
   def show(conn, %{"id" => id}) do
