@@ -29,17 +29,23 @@ defmodule PromoWeb.PromoCodeController do
         # if an error occurs during event location creation,
         # it's probably because the place/venue already exists in event_locations
         # fetch the event_location and use its id to generate a new promo code
-        [%EventLocation{id: event_location_id}] =
-          EventLocations.get_event_location_by_place!(Map.get(event_location_params, "place"))
-
-        create_promo_code(conn, promo_code_params, event_location_id)
+        with [%EventLocation{id: event_location_id}] <-
+               EventLocations.get_event_location_by_place!(
+                 Map.get(event_location_params, "place")
+               ) do
+          create_promo_code(conn, promo_code_params, event_location_id)
+        end
     end
   end
 
   defp create_promo_code(conn, promo_code_params, event_location_id) do
     promo_code_params =
       promo_code_params
-      |> Map.put("p_code", code_prefix() <> "-" <> random_string(5))
+      |> Map.put(
+        "p_code",
+        # flawed: carries a small range of unique codes
+        code_prefix() <> "-" <> random_string(5)
+      )
       |> Map.put("event_location_id", event_location_id)
 
     with {:ok, %PromoCode{} = promo_code} <-

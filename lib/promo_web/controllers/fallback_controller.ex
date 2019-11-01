@@ -19,4 +19,11 @@ defmodule PromoWeb.FallbackController do
     |> put_view(PromoWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :nil_place}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(PromoWeb.ErrorView)
+    |> render(:"422")
+  end
 end

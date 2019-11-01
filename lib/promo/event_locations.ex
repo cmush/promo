@@ -51,6 +51,9 @@ defmodule Promo.EventLocations do
       ** (Ecto.NoResultsError)
 
   """
+
+  def get_event_location_by_place!(nil), do: {:error, :nil_place}
+
   def get_event_location_by_place!(place) do
     from(event_location in EventLocation, where: event_location.place == ^place)
     |> Repo.all()
