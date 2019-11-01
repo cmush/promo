@@ -7,7 +7,11 @@ defmodule Promo.EventLocationsTest do
     alias Promo.EventLocations.EventLocation
 
     @valid_attrs %{latitude: "some latitude", longitude: "some longitude", place: "some place"}
-    @update_attrs %{latitude: "some updated latitude", longitude: "some updated longitude", place: "some updated place"}
+    @update_attrs %{
+      latitude: "some updated latitude",
+      longitude: "some updated longitude",
+      place: "some updated place"
+    }
     @invalid_attrs %{latitude: nil, longitude: nil, place: nil}
 
     def event_location_fixture(attrs \\ %{}) do
@@ -30,7 +34,9 @@ defmodule Promo.EventLocationsTest do
     end
 
     test "create_event_location/1 with valid data creates a event_location" do
-      assert {:ok, %EventLocation{} = event_location} = EventLocations.create_event_location(@valid_attrs)
+      assert {:ok, %EventLocation{} = event_location} =
+               EventLocations.create_event_location(@valid_attrs)
+
       assert event_location.latitude == "some latitude"
       assert event_location.longitude == "some longitude"
       assert event_location.place == "some place"
@@ -42,7 +48,10 @@ defmodule Promo.EventLocationsTest do
 
     test "update_event_location/2 with valid data updates the event_location" do
       event_location = event_location_fixture()
-      assert {:ok, %EventLocation{} = event_location} = EventLocations.update_event_location(event_location, @update_attrs)
+
+      assert {:ok, %EventLocation{} = event_location} =
+               EventLocations.update_event_location(event_location, @update_attrs)
+
       assert event_location.latitude == "some updated latitude"
       assert event_location.longitude == "some updated longitude"
       assert event_location.place == "some updated place"
@@ -50,14 +59,20 @@ defmodule Promo.EventLocationsTest do
 
     test "update_event_location/2 with invalid data returns error changeset" do
       event_location = event_location_fixture()
-      assert {:error, %Ecto.Changeset{}} = EventLocations.update_event_location(event_location, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               EventLocations.update_event_location(event_location, @invalid_attrs)
+
       assert event_location == EventLocations.get_event_location!(event_location.id)
     end
 
     test "delete_event_location/1 deletes the event_location" do
       event_location = event_location_fixture()
       assert {:ok, %EventLocation{}} = EventLocations.delete_event_location(event_location)
-      assert_raise Ecto.NoResultsError, fn -> EventLocations.get_event_location!(event_location.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        EventLocations.get_event_location!(event_location.id)
+      end
     end
 
     test "change_event_location/1 returns a event_location changeset" do

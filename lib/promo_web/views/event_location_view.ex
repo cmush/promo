@@ -11,9 +11,11 @@ defmodule PromoWeb.EventLocationView do
   end
 
   def render("event_location.json", %{event_location: event_location}) do
-    %{id: event_location.id,
+    %{
+      id: event_location.id,
       place: event_location.place,
       latitude: event_location.latitude,
-      longitude: event_location.longitude}
+      longitude: event_location.longitude
+    }
   end
 end

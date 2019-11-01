@@ -56,8 +56,15 @@ defmodule PromoWeb.EventLocationControllerTest do
   describe "update event_location" do
     setup [:create_event_location]
 
-    test "renders event_location when data is valid", %{conn: conn, event_location: %EventLocation{id: id} = event_location} do
-      conn = put(conn, Routes.event_location_path(conn, :update, event_location), event_location: @update_attrs)
+    test "renders event_location when data is valid", %{
+      conn: conn,
+      event_location: %EventLocation{id: id} = event_location
+    } do
+      conn =
+        put(conn, Routes.event_location_path(conn, :update, event_location),
+          event_location: @update_attrs
+        )
+
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.event_location_path(conn, :show, id))
@@ -71,7 +78,11 @@ defmodule PromoWeb.EventLocationControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, event_location: event_location} do
-      conn = put(conn, Routes.event_location_path(conn, :update, event_location), event_location: @invalid_attrs)
+      conn =
+        put(conn, Routes.event_location_path(conn, :update, event_location),
+          event_location: @invalid_attrs
+        )
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

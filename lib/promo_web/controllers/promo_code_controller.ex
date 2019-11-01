@@ -28,7 +28,8 @@ defmodule PromoWeb.PromoCodeController do
   def update(conn, %{"id" => id, "promo_code" => promo_code_params}) do
     promo_code = PromoCodes.get_promo_code!(id)
 
-    with {:ok, %PromoCode{} = promo_code} <- PromoCodes.update_promo_code(promo_code, promo_code_params) do
+    with {:ok, %PromoCode{} = promo_code} <-
+           PromoCodes.update_promo_code(promo_code, promo_code_params) do
       render(conn, "show.json", promo_code: promo_code)
     end
   end

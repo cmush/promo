@@ -9,6 +9,5 @@ defmodule Promo.Repo.Migrations.CreateEventLocations do
 
       timestamps()
     end
-
   end
 end

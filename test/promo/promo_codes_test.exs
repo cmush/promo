@@ -6,8 +6,20 @@ defmodule Promo.PromoCodesTest do
   describe "promo_codes" do
     alias Promo.PromoCodes.PromoCode
 
-    @valid_attrs %{amount: 120.5, expiry_date: ~D[2010-04-17], p_code: "some p_code", radius: 120.5, status: true}
-    @update_attrs %{amount: 456.7, expiry_date: ~D[2011-05-18], p_code: "some updated p_code", radius: 456.7, status: false}
+    @valid_attrs %{
+      amount: 120.5,
+      expiry_date: ~D[2010-04-17],
+      p_code: "some p_code",
+      radius: 120.5,
+      status: true
+    }
+    @update_attrs %{
+      amount: 456.7,
+      expiry_date: ~D[2011-05-18],
+      p_code: "some updated p_code",
+      radius: 456.7,
+      status: false
+    }
     @invalid_attrs %{amount: nil, expiry_date: nil, p_code: nil, radius: nil, status: nil}
 
     def promo_code_fixture(attrs \\ %{}) do
@@ -44,7 +56,10 @@ defmodule Promo.PromoCodesTest do
 
     test "update_promo_code/2 with valid data updates the promo_code" do
       promo_code = promo_code_fixture()
-      assert {:ok, %PromoCode{} = promo_code} = PromoCodes.update_promo_code(promo_code, @update_attrs)
+
+      assert {:ok, %PromoCode{} = promo_code} =
+               PromoCodes.update_promo_code(promo_code, @update_attrs)
+
       assert promo_code.amount == 456.7
       assert promo_code.expiry_date == ~D[2011-05-18]
       assert promo_code.p_code == "some updated p_code"
@@ -54,7 +69,10 @@ defmodule Promo.PromoCodesTest do
 
     test "update_promo_code/2 with invalid data returns error changeset" do
       promo_code = promo_code_fixture()
-      assert {:error, %Ecto.Changeset{}} = PromoCodes.update_promo_code(promo_code, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               PromoCodes.update_promo_code(promo_code, @invalid_attrs)
+
       assert promo_code == PromoCodes.get_promo_code!(promo_code.id)
     end
 

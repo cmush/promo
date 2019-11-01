@@ -12,7 +12,8 @@ defmodule PromoWeb.EventLocationController do
   end
 
   def create(conn, %{"event_location" => event_location_params}) do
-    with {:ok, %EventLocation{} = event_location} <- EventLocations.create_event_location(event_location_params) do
+    with {:ok, %EventLocation{} = event_location} <-
+           EventLocations.create_event_location(event_location_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.event_location_path(conn, :show, event_location))
@@ -28,7 +29,8 @@ defmodule PromoWeb.EventLocationController do
   def update(conn, %{"id" => id, "event_location" => event_location_params}) do
     event_location = EventLocations.get_event_location!(id)
 
-    with {:ok, %EventLocation{} = event_location} <- EventLocations.update_event_location(event_location, event_location_params) do
+    with {:ok, %EventLocation{} = event_location} <-
+           EventLocations.update_event_location(event_location, event_location_params) do
       render(conn, "show.json", event_location: event_location)
     end
   end
