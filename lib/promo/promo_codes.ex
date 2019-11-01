@@ -22,6 +22,25 @@ defmodule Promo.PromoCodes do
   end
 
   @doc """
+  Returns the list of valid promo_codes.
+  - where promo_code.status == true
+  - filter where promo_code.expiry_date is today (before 12.59pm) / after today
+
+  ## Examples
+
+      iex> list_valid_promo_codes()
+      [%PromoCode{}, ...]
+
+  """
+  def list_valid_promo_codes do
+    from(promo_code in PromoCode, where: promo_code.status == true)
+    |> Repo.all()
+    |> Enum.filter(fn %PromoCode{} = promo_code ->
+      Date.diff(promo_code.expiry_date, Date.utc_today()) >= 0
+    end)
+  end
+
+  @doc """
   Gets a single promo_code.
 
   Raises `Ecto.NoResultsError` if the Promo code does not exist.

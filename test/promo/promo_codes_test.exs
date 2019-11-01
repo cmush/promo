@@ -28,7 +28,7 @@ defmodule Promo.PromoCodesTest do
 
     @valid_attrs %{
       amount: 120.5,
-      expiry_date: ~D[2010-04-17],
+      expiry_date: Date.add(Date.utc_today(), 5),
       p_code: "some p_code",
       radius: 120.5,
       status: true,
@@ -36,10 +36,10 @@ defmodule Promo.PromoCodesTest do
     }
     @update_attrs %{
       amount: 456.7,
-      expiry_date: ~D[2011-05-18],
+      expiry_date: Date.add(Date.utc_today(), -1),
       p_code: "some updated p_code",
       radius: 456.7,
-      status: false,
+      status: true,
       event_location_id: 0
     }
     @invalid_attrs %{
@@ -66,6 +66,12 @@ defmodule Promo.PromoCodesTest do
       assert PromoCodes.list_promo_codes() == [promo_code]
     end
 
+    test "list_valid_promo_codes/0 returns all valid promo_codes (active && not expired)" do
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
+      assert PromoCodes.list_valid_promo_codes() == [promo_code]
+    end
+
     test "get_promo_code!/1 returns the promo_code with given id" do
       event_location = event_location_fixture()
       promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
@@ -79,7 +85,7 @@ defmodule Promo.PromoCodesTest do
                PromoCodes.create_promo_code(%{@valid_attrs | event_location_id: event_location.id})
 
       assert promo_code.amount == 120.5
-      assert promo_code.expiry_date == ~D[2010-04-17]
+      assert promo_code.expiry_date == Date.add(Date.utc_today(), 5)
       assert promo_code.p_code == "some p_code"
       assert promo_code.radius == 120.5
       assert promo_code.status == true
@@ -100,10 +106,10 @@ defmodule Promo.PromoCodesTest do
                })
 
       assert promo_code.amount == 456.7
-      assert promo_code.expiry_date == ~D[2011-05-18]
+      assert promo_code.expiry_date == Date.add(Date.utc_today(), -1)
       assert promo_code.p_code == "some updated p_code"
       assert promo_code.radius == 456.7
-      assert promo_code.status == false
+      assert promo_code.status == true
     end
 
     test "update_promo_code/2 with invalid data returns error changeset" do
