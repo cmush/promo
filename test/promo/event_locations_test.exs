@@ -33,6 +33,11 @@ defmodule Promo.EventLocationsTest do
       assert EventLocations.get_event_location!(event_location.id) == event_location
     end
 
+    test "get_event_location_by_place!/1 returns the event_location with given place" do
+      event_location = event_location_fixture()
+      assert EventLocations.get_event_location_by_place!(event_location.place) == [event_location]
+    end
+
     test "create_event_location/1 with valid data creates a event_location" do
       assert {:ok, %EventLocation{} = event_location} =
                EventLocations.create_event_location(@valid_attrs)

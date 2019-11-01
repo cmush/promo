@@ -15,5 +15,6 @@ defmodule Promo.EventLocations.EventLocation do
     event_location
     |> cast(attrs, [:place, :latitude, :longitude])
     |> validate_required([:place, :latitude, :longitude])
+    |> unique_constraint(:place)
   end
 end

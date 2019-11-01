@@ -38,6 +38,25 @@ defmodule Promo.EventLocations do
   def get_event_location!(id), do: Repo.get!(EventLocation, id)
 
   @doc """
+  Gets a single event_location by name.
+
+  Raises `Ecto.NoResultsError` if the named Event location does not exist.
+
+  ## Examples
+
+      iex> get_event_location_by_place!("Nairobi, Upperhill")
+      %EventLocation{}
+
+      iex> get_event_location_by_place!("Nyairofi")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_event_location_by_place!(place) do
+    from(event_location in EventLocation, where: event_location.place == ^place)
+    |> Repo.all()
+  end
+
+  @doc """
   Creates a event_location.
 
   ## Examples
