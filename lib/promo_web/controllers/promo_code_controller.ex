@@ -19,20 +19,35 @@ defmodule PromoWeb.PromoCodeController do
   def create(conn, %{
         "promo_code" => %{"event_location" => event_location_params} = promo_code_params
       }) do
-    with {:ok, %EventLocation{} = event_location} <-
-           EventLocations.create_event_location(event_location_params) do
-      promo_code_params =
-        promo_code_params
-        |> Map.put("p_code", code_prefix() <> "-" <> random_string(5))
-        |> Map.put("event_location_id", event_location.id)
+    case EventLocations.create_event_location(event_location_params) do
+      {:ok, %EventLocation{} = event_location} ->
+        # The location supplied is successfully created,
+        # its id is then used to generate a promo code
+        create_promo_code(conn, promo_code_params, event_location.id)
 
-      with {:ok, %PromoCode{} = promo_code} <-
-             PromoCodes.create_promo_code(promo_code_params) do
-        conn
-        |> put_status(:created)
-        |> put_resp_header("location", Routes.promo_code_path(conn, :show, promo_code))
-        |> render("show.json", promo_code: promo_code)
-      end
+      _error ->
+        # if an error occurs during event location creation,
+        # it's probably because the place/venue already exists in event_locations
+        # fetch the event_location and use its id to generate a new promo code
+        [%EventLocation{id: event_location_id}] =
+          EventLocations.get_event_location_by_place!(Map.get(event_location_params, "place"))
+
+        create_promo_code(conn, promo_code_params, event_location_id)
+    end
+  end
+
+  defp create_promo_code(conn, promo_code_params, event_location_id) do
+    promo_code_params =
+      promo_code_params
+      |> Map.put("p_code", code_prefix() <> "-" <> random_string(5))
+      |> Map.put("event_location_id", event_location_id)
+
+    with {:ok, %PromoCode{} = promo_code} <-
+           PromoCodes.create_promo_code(promo_code_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.promo_code_path(conn, :show, promo_code))
+      |> render("show.json", promo_code: promo_code)
     end
   end
 
