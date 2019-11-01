@@ -16,7 +16,7 @@ defmodule Promo.PromoCodes.PromoCode do
   @doc false
   def changeset(promo_code, attrs) do
     promo_code
-    |> cast(attrs, [:p_code, :amount, :expiry_date, :status, :radius])
-    |> validate_required([:p_code, :amount, :expiry_date, :status, :radius])
+    |> cast(attrs, [:p_code, :amount, :expiry_date, :status, :radius, :event_location_id])
+    |> validate_required([:p_code, :amount, :expiry_date, :status, :radius, :event_location_id])
   end
 end

@@ -1,6 +1,28 @@
 defmodule PromoWeb.PromoCodeControllerTest do
   use PromoWeb.ConnCase
 
+  alias Promo.EventLocations
+
+  @valid_event_location %{
+    latitude: "some latitude",
+    longitude: "some longitude",
+    place: "some place"
+  }
+  @update_event_location %{
+    latitude: "some updated latitude",
+    longitude: "some updated longitude",
+    place: "some updated place"
+  }
+
+  def event_location_fixture(attrs \\ %{}) do
+    {:ok, event_location} =
+      attrs
+      |> Enum.into(@valid_event_location)
+      |> EventLocations.create_event_location()
+
+    event_location
+  end
+
   alias Promo.PromoCodes
   alias Promo.PromoCodes.PromoCode
 
@@ -9,19 +31,32 @@ defmodule PromoWeb.PromoCodeControllerTest do
     expiry_date: ~D[2010-04-17],
     p_code: "some p_code",
     radius: 120.5,
-    status: true
+    status: true,
+    event_location_id: 0
   }
   @update_attrs %{
     amount: 456.7,
     expiry_date: ~D[2011-05-18],
     p_code: "some updated p_code",
     radius: 456.7,
-    status: false
+    status: false,
+    event_location_id: 0
   }
-  @invalid_attrs %{amount: nil, expiry_date: nil, p_code: nil, radius: nil, status: nil}
+  @invalid_attrs %{
+    amount: nil,
+    expiry_date: nil,
+    p_code: nil,
+    radius: nil,
+    status: nil,
+    event_location_id: nil
+  }
 
   def fixture(:promo_code) do
-    {:ok, promo_code} = PromoCodes.create_promo_code(@create_attrs)
+    event_location = event_location_fixture()
+
+    {:ok, promo_code} =
+      PromoCodes.create_promo_code(%{@create_attrs | event_location_id: event_location.id})
+
     promo_code
   end
 
@@ -38,7 +73,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "create promo_code" do
     test "renders promo_code when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+      event_location = event_location_fixture()
+
+      conn =
+        post(conn, Routes.promo_code_path(conn, :create),
+          promo_code: %{@create_attrs | event_location_id: event_location.id}
+        )
+
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
@@ -66,8 +107,12 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn: conn,
       promo_code: %PromoCode{id: id} = promo_code
     } do
+      event_location = event_location_fixture(@update_event_location)
+
       conn =
-        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @update_attrs)
+        put(conn, Routes.promo_code_path(conn, :update, promo_code),
+          promo_code: %{@update_attrs | event_location_id: event_location.id}
+        )
 
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 

@@ -1,9 +1,29 @@
 defmodule Promo.PromoCodesTest do
   use Promo.DataCase
 
-  alias Promo.PromoCodes
+  alias Promo.{PromoCodes, EventLocations}
 
   describe "promo_codes" do
+    @valid_event_location %{
+      latitude: "some latitude",
+      longitude: "some longitude",
+      place: "some place"
+    }
+    @update_event_location %{
+      latitude: "some updated latitude",
+      longitude: "some updated longitude",
+      place: "some updated place"
+    }
+
+    def event_location_fixture(attrs \\ %{}) do
+      {:ok, event_location} =
+        attrs
+        |> Enum.into(@valid_event_location)
+        |> EventLocations.create_event_location()
+
+      event_location
+    end
+
     alias Promo.PromoCodes.PromoCode
 
     @valid_attrs %{
@@ -11,16 +31,25 @@ defmodule Promo.PromoCodesTest do
       expiry_date: ~D[2010-04-17],
       p_code: "some p_code",
       radius: 120.5,
-      status: true
+      status: true,
+      event_location_id: 0
     }
     @update_attrs %{
       amount: 456.7,
       expiry_date: ~D[2011-05-18],
       p_code: "some updated p_code",
       radius: 456.7,
-      status: false
+      status: false,
+      event_location_id: 0
     }
-    @invalid_attrs %{amount: nil, expiry_date: nil, p_code: nil, radius: nil, status: nil}
+    @invalid_attrs %{
+      amount: nil,
+      expiry_date: nil,
+      p_code: nil,
+      radius: nil,
+      status: nil,
+      event_location_id: nil
+    }
 
     def promo_code_fixture(attrs \\ %{}) do
       {:ok, promo_code} =
@@ -32,17 +61,23 @@ defmodule Promo.PromoCodesTest do
     end
 
     test "list_promo_codes/0 returns all promo_codes" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
       assert PromoCodes.list_promo_codes() == [promo_code]
     end
 
     test "get_promo_code!/1 returns the promo_code with given id" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
       assert PromoCodes.get_promo_code!(promo_code.id) == promo_code
     end
 
     test "create_promo_code/1 with valid data creates a promo_code" do
-      assert {:ok, %PromoCode{} = promo_code} = PromoCodes.create_promo_code(@valid_attrs)
+      event_location = event_location_fixture()
+
+      assert {:ok, %PromoCode{} = promo_code} =
+               PromoCodes.create_promo_code(%{@valid_attrs | event_location_id: event_location.id})
+
       assert promo_code.amount == 120.5
       assert promo_code.expiry_date == ~D[2010-04-17]
       assert promo_code.p_code == "some p_code"
@@ -55,10 +90,14 @@ defmodule Promo.PromoCodesTest do
     end
 
     test "update_promo_code/2 with valid data updates the promo_code" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture(@update_event_location)
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
 
       assert {:ok, %PromoCode{} = promo_code} =
-               PromoCodes.update_promo_code(promo_code, @update_attrs)
+               PromoCodes.update_promo_code(promo_code, %{
+                 @update_attrs
+                 | event_location_id: event_location.id
+               })
 
       assert promo_code.amount == 456.7
       assert promo_code.expiry_date == ~D[2011-05-18]
@@ -68,7 +107,8 @@ defmodule Promo.PromoCodesTest do
     end
 
     test "update_promo_code/2 with invalid data returns error changeset" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
 
       assert {:error, %Ecto.Changeset{}} =
                PromoCodes.update_promo_code(promo_code, @invalid_attrs)
@@ -77,13 +117,15 @@ defmodule Promo.PromoCodesTest do
     end
 
     test "delete_promo_code/1 deletes the promo_code" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
       assert {:ok, %PromoCode{}} = PromoCodes.delete_promo_code(promo_code)
       assert_raise Ecto.NoResultsError, fn -> PromoCodes.get_promo_code!(promo_code.id) end
     end
 
     test "change_promo_code/1 returns a promo_code changeset" do
-      promo_code = promo_code_fixture()
+      event_location = event_location_fixture()
+      promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
       assert %Ecto.Changeset{} = PromoCodes.change_promo_code(promo_code)
     end
   end
