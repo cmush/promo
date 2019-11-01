@@ -3,11 +3,13 @@ defmodule Promo.Repo.Migrations.CreateEventLocations do
 
   def change do
     create table(:event_locations) do
-      add :place, :string
-      add :latitude, :string
-      add :longitude, :string
+      add :place, :string, null: false
+      add :latitude, :string, null: false
+      add :longitude, :string, null: false
 
       timestamps()
     end
+
+    create unique_index(:event_locations, [:place])
   end
 end
