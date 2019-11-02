@@ -12,7 +12,7 @@ defmodule PromoWeb.PromoCodeController do
   end
 
   def index(conn, _params) do
-    promo_codes = PromoCodes.list_promo_codes()
+    promo_codes = PromoCodes.list_promo_codes_with_event_location()
     render(conn, "index.json", promo_codes: promo_codes)
   end
 

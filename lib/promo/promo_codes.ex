@@ -48,6 +48,7 @@ defmodule Promo.PromoCodes do
   def list_valid_promo_codes do
     from(promo_code in PromoCode, where: promo_code.status == true)
     |> Repo.all()
+    |> Repo.preload(:event_locations)
     |> Enum.filter(fn %PromoCode{} = promo_code ->
       Date.diff(promo_code.expiry_date, Date.utc_today()) >= 0
     end)
