@@ -22,6 +22,19 @@ defmodule Promo.PromoCodes do
   end
 
   @doc """
+  Returns the list of promo_codes (with event location).
+
+  ## Examples
+
+      iex> list_promo_codes_with_event_location()
+      [%PromoCode{}, ...]
+
+  """
+  def list_promo_codes_with_event_location do
+    Repo.all(PromoCode) |> Repo.preload(:event_locations)
+  end
+
+  @doc """
   Returns the list of valid promo_codes.
   - where promo_code.status == true
   - filter where promo_code.expiry_date is today (before 12.59pm) / after today

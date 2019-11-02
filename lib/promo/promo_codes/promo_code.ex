@@ -10,6 +10,10 @@ defmodule Promo.PromoCodes.PromoCode do
     field :status, :boolean, default: false
     field :event_location_id, :id
 
+    has_one :event_locations, Promo.EventLocations.EventLocation,
+      foreign_key: :id,
+      references: :event_location_id
+
     timestamps()
   end
 

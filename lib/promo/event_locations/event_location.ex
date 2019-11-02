@@ -8,6 +8,11 @@ defmodule Promo.EventLocations.EventLocation do
     field :place, :string
 
     timestamps()
+
+    belongs_to :promo_codes, Promo.PromoCodes.PromoCode,
+      foreign_key: :id,
+      references: :event_location_id,
+      define_field: false
   end
 
   @doc false
