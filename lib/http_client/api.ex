@@ -33,12 +33,12 @@ defmodule HttpClient.Api do
       options
     )
     |> case do
-         {:ok, %{body: raw, status_code: code, headers: headers}} ->
-           {code, raw, headers}
+      {:ok, %{body: raw, status_code: code, headers: headers}} ->
+        {code, raw, headers}
 
-         {:error, %{reason: reason}} ->
-           {:error, reason, []}
-       end
+      {:error, %{reason: reason}} ->
+        {:error, reason, []}
+    end
   end
 
   @doc """
@@ -54,10 +54,10 @@ defmodule HttpClient.Api do
   def content_type([]), do: "application/json"
 
   def content_type([{"Content-Type", c_type} | _]),
-      do:
-        c_type
-        |> String.split(";")
-        |> List.first()
+    do:
+      c_type
+      |> String.split(";")
+      |> List.first()
 
   def content_type([_ | t]), do: content_type(t)
 
@@ -70,8 +70,8 @@ defmodule HttpClient.Api do
     raw_body
     |> Jason.decode(keys: :atoms)
     |> case do
-         {:ok, body} -> {200, body}
-         _ -> {:error, raw_body}
-       end
+      {:ok, body} -> {200, body}
+      _ -> {:error, raw_body}
+    end
   end
 end

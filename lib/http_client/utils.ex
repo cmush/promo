@@ -26,19 +26,19 @@ defmodule HttpClient.Utils do
   def url(:error, :base_url__directions), do: :no_new_page
 
   def url(params, :base_url__directions) when is_binary(params),
-      do: base_url__directions() <> "?" <> params
+    do: base_url__directions() <> "?" <> params
 
   def url(params, :base_url__directions) when is_map(params),
-      do: base_url__directions() <> query_params(params)
+    do: base_url__directions() <> query_params(params)
 
   def url([], :base_url__distance_matrix), do: base_url__distance_matrix()
   def url(:error, :base_url__distance_matrix), do: :no_new_page
 
   def url(params, :base_url__distance_matrix) when is_binary(params),
-      do: base_url__distance_matrix() <> "?" <> params
+    do: base_url__distance_matrix() <> "?" <> params
 
   def url(params, :base_url__distance_matrix) when is_map(params),
-      do: base_url__distance_matrix() <> query_params(params)
+    do: base_url__distance_matrix() <> query_params(params)
 
   # Generate a url query string based on map inputs
   ## Examples
@@ -80,7 +80,7 @@ defmodule HttpClient.Utils do
   def http_resp_ok?({400, error_message}), do: {:bad_request, error_message}
 
   def http_resp_ok?({:error, "service unavailable"}),
-      do: {:service_unavailable, "service unavailable"}
+    do: {:service_unavailable, "service unavailable"}
 
   def http_resp_ok?({code, error_message}) do
     IO.inspect(code, label: "TODO: handle error code")
