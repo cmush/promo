@@ -63,12 +63,16 @@ defmodule Promo.PromoCodesTest do
     test "list_promo_codes/0 returns all promo_codes" do
       event_location = event_location_fixture()
       promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
+      # We need the promo codes to have the preloaded event_location
+      promo_code = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
       assert PromoCodes.list_promo_codes() == [promo_code]
     end
 
     test "list_valid_promo_codes/0 returns all valid promo_codes (active && not expired)" do
       event_location = event_location_fixture()
       promo_code = promo_code_fixture(%{@valid_attrs | event_location_id: event_location.id})
+      # We need the promo codes to have the preloaded event_location
+      promo_code = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
       assert PromoCodes.list_valid_promo_codes() == [promo_code]
     end
 

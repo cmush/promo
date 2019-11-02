@@ -26,4 +26,18 @@ defmodule PromoWeb.FallbackController do
     |> put_view(PromoWeb.ErrorView)
     |> render(:"422")
   end
+
+  def call(conn, {:error, :promo_code_not_found}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(PromoWeb.ErrorView)
+    |> render(:"404")
+  end
+
+  def call(conn, {:error, :valid_promo_code_not_found}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(PromoWeb.ErrorView)
+    |> render("valid_promo_code_not_found_error.json")
+  end
 end

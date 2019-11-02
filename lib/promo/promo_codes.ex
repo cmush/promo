@@ -9,7 +9,7 @@ defmodule Promo.PromoCodes do
   alias Promo.PromoCodes.PromoCode
 
   @doc """
-  Returns the list of promo_codes.
+  Returns the list of promo_codes (with preloaded event location).
 
   ## Examples
 
@@ -18,19 +18,6 @@ defmodule Promo.PromoCodes do
 
   """
   def list_promo_codes do
-    Repo.all(PromoCode)
-  end
-
-  @doc """
-  Returns the list of promo_codes (with event location).
-
-  ## Examples
-
-      iex> list_promo_codes_with_event_location()
-      [%PromoCode{}, ...]
-
-  """
-  def list_promo_codes_with_event_location do
     Repo.all(PromoCode)
     |> Repo.preload(:event_locations)
   end
@@ -71,10 +58,57 @@ defmodule Promo.PromoCodes do
   """
   def get_promo_code!(id), do: Repo.get!(PromoCode, id)
 
-  def get_promo_code_by_code!(p_code),
-    do:
-      Repo.all(from promo_code in PromoCode, where: promo_code.p_code == ^p_code)
-      |> Repo.preload(:event_locations)
+  @doc """
+  Gets a single promo_code by its p_code, preload its event_location.
+
+  Raises `Ecto.NoResultsError` if the Promo code does not exist.
+
+  ## Examples
+
+      iex> get_promo_code_by_code!(123)
+      %PromoCode{}
+
+      iex> get_promo_code_by_code!(456)
+      {:error, :promo_code_not_found}
+
+  """
+  def get_promo_code_by_code!(p_code) do
+    case Repo.all(from promo_code in PromoCode, where: promo_code.p_code == ^p_code)
+         |> Repo.preload(:event_locations) do
+      [] -> {:error, :promo_code_not_found}
+      [event_location] -> event_location
+    end
+  end
+
+  @doc """
+  Gets a single valid promo_code by its p_code, preload its event_location.
+  a promo_code is valid if its status is true and its expiry date has yet to pass.
+
+  Raises `Ecto.NoResultsError` if the Promo code does not exist.
+
+  ## Examples
+
+      iex> get_valid_promo_code_by_code!(123)
+      %PromoCode{}
+
+      iex> get_valid_promo_code_by_code!(456)
+      {:error, :promo_code_not_found}
+
+  """
+  def get_valid_promo_code_by_code!(p_code) do
+    case Repo.all(
+           from promo_code in PromoCode,
+             where: promo_code.p_code == ^p_code,
+             where: promo_code.status == true
+         )
+         |> Repo.preload(:event_locations)
+         |> Enum.filter(fn %PromoCode{} = promo_code ->
+           Date.diff(promo_code.expiry_date, Date.utc_today()) >= 0
+         end) do
+      [] -> {:error, :valid_promo_code_not_found}
+      [event_location] -> event_location
+    end
+  end
 
   @doc """
   Creates a promo_code.

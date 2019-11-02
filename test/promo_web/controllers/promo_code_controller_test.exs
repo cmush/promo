@@ -3,6 +3,18 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   alias Promo.EventLocations
 
+  #  @origin_location %{
+  #    latitude: "-1.269650",
+  #    longitude: "36.808922",
+  #    place: "Nairobi, Westlands"
+  #  }
+  #
+  #  @destination_location %{
+  #    latitude: "-1.285790",
+  #    longitude: "36.820030",
+  #    place: "Nairobi, Upperhill"
+  #  }
+
   @valid_event_location %{
     latitude: "some latitude",
     longitude: "some longitude",
@@ -167,6 +179,34 @@ defmodule PromoWeb.PromoCodeControllerTest do
         get(conn, Routes.promo_code_path(conn, :show, promo_code))
       end
     end
+  end
+
+  describe "promo_code operations" do
+    setup [:create_promo_code]
+
+    test "check validity of supplied promo_code (active && yet to expire)", %{
+      conn: conn,
+      promo_code: promo_code
+    } do
+      IO.inspect(promo_code, label: "promo_code")
+      %PromoCode{p_code: p_code} = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
+      IO.inspect(promo_code, label: "promo_code")
+
+      conn
+      |> post(
+        Routes.promo_code_path(conn, :check_validity, p_code,
+          origin: %{latitude: "-1.269650", longitude: "36.808922", place: "Nairobi, Westlands"},
+          destination: %{
+            latitude: "-1.269650",
+            longitude: "36.808922",
+            place: "Nairobi, Westlands"
+          }
+        )
+      )
+    end
+
+    #    test "configure a promo_code's radius"
+    #    test "deactivate a promo_code"
   end
 
   defp create_promo_code(_) do

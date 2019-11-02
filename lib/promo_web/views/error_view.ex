@@ -13,4 +13,10 @@ defmodule PromoWeb.ErrorView do
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
+
+  def render("valid_promo_code_not_found_error.json", _) do
+    %{
+      error: "supplied promo_code is not valid: expired / deactivated / not valid for destination"
+    }
+  end
 end

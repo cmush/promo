@@ -8,12 +8,12 @@ defmodule PromoWeb.PromoCodeController do
 
   def index(conn, %{"validity" => "active"}) do
     promo_codes = PromoCodes.list_valid_promo_codes()
-    render(conn, "index.json", promo_codes: promo_codes)
+    render(conn, "index_with_event_location.json", promo_codes: promo_codes)
   end
 
   def index(conn, _params) do
-    promo_codes = PromoCodes.list_promo_codes_with_event_location()
-    render(conn, "index.json", promo_codes: promo_codes)
+    promo_codes = PromoCodes.list_promo_codes()
+    render(conn, "index_with_event_location.json", promo_codes: promo_codes)
   end
 
   def create(conn, %{
@@ -100,9 +100,31 @@ defmodule PromoWeb.PromoCodeController do
     render(conn, "show.json", promo_code: promo_code)
   end
 
-  def check_validity(conn, %{"p_code" => p_code}) do
-    [promo_code] = PromoCodes.get_promo_code_by_code!(p_code)
+  def check_validity(conn, request) do
+    with(%PromoCode{} = promo_code <- check_validity(request)) do
+      render(
+        conn,
+        "show.json",
+        promo_code: promo_code
+      )
+    end
+  end
 
-    render(conn, "show.json", promo_code: promo_code)
+  def check_validity(%{
+        "p_code" => p_code,
+        "origin" => %{
+          "place" => _ori_place,
+          "latitude" => _ori_latitude,
+          "longitude" => _ori_longitude
+        },
+        "destination" => %{
+          "place" => _dest_place,
+          "latitude" => _dest_latitude,
+          "longitude" => _dest_longitude
+        }
+      }) do
+    with promo_code <- PromoCodes.get_valid_promo_code_by_code!(p_code) do
+      promo_code
+    end
   end
 end
