@@ -87,4 +87,10 @@ defmodule PromoWeb.PromoCodeController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def deactivate(conn, %{"p_code" => p_code}) do
+    [promo_code] = PromoCodes.get_promo_code_by_code!(p_code)
+    PromoCodes.update_promo_code(%{promo_code | status: false}, %{})
+    render(conn, "show.json", promo_code: promo_code)
+  end
 end

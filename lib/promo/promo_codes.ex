@@ -56,6 +56,9 @@ defmodule Promo.PromoCodes do
   """
   def get_promo_code!(id), do: Repo.get!(PromoCode, id)
 
+  def get_promo_code_by_code!(p_code),
+    do: Repo.all(from promo_code in PromoCode, where: promo_code.p_code == ^p_code)
+
   @doc """
   Creates a promo_code.
 
