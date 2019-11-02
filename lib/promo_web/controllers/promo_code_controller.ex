@@ -99,4 +99,10 @@ defmodule PromoWeb.PromoCodeController do
     PromoCodes.update_promo_code(%{promo_code | radius: radius}, %{})
     render(conn, "show.json", promo_code: promo_code)
   end
+
+  def check_validity(conn, %{"p_code" => p_code}) do
+    [promo_code] = PromoCodes.get_promo_code_by_code!(p_code)
+
+    render(conn, "show.json", promo_code: promo_code)
+  end
 end

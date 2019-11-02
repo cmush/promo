@@ -31,7 +31,8 @@ defmodule Promo.PromoCodes do
 
   """
   def list_promo_codes_with_event_location do
-    Repo.all(PromoCode) |> Repo.preload(:event_locations)
+    Repo.all(PromoCode)
+    |> Repo.preload(:event_locations)
   end
 
   @doc """
@@ -71,7 +72,9 @@ defmodule Promo.PromoCodes do
   def get_promo_code!(id), do: Repo.get!(PromoCode, id)
 
   def get_promo_code_by_code!(p_code),
-    do: Repo.all(from promo_code in PromoCode, where: promo_code.p_code == ^p_code)
+    do:
+      Repo.all(from promo_code in PromoCode, where: promo_code.p_code == ^p_code)
+      |> Repo.preload(:event_locations)
 
   @doc """
   Creates a promo_code.

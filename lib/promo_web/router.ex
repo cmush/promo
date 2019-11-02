@@ -14,8 +14,9 @@ defmodule PromoWeb.Router do
     post "/promo_codes", PromoCodeController, :create
     get "/promo_codes/:id", PromoCodeController, :show
     post "/promo_codes/validate", PromoCodeController, :validate
+    post "/promo_codes/radius/:p_code", PromoCodeController, :radius
     post "/promo_codes/deactivate/:p_code", PromoCodeController, :deactivate
-    post "/promo_codes/radius/:p_code", PromoCodeController, :deactivate
+    post "/promo_codes/check_validity/:p_code", PromoCodeController, :check_validity
     patch "/promo_codes/:id", PromoCodeController, :update
     put "/promo_codes/:id", PromoCodeController, :update
     delete "/promo_codes/:id", PromoCodeController, :delete
