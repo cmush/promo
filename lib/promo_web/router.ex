@@ -9,6 +9,13 @@ defmodule PromoWeb.Router do
     pipe_through :api
 
     resources "/event_locations", EventLocationController, except: [:new, :edit]
-    resources "/promo_codes", PromoCodeController, except: [:new, :edit]
+
+    get "/promo_codes", PromoCodeController, :index
+    post "/promo_codes", PromoCodeController, :create
+    get "/promo_codes/:id", PromoCodeController, :show
+    post "/promo_codes/validate", PromoCodeController, :validate
+    patch "/promo_codes/:id", PromoCodeController, :update
+    put "/promo_codes/:id", PromoCodeController, :update
+    delete "/promo_codes/:id", PromoCodeController, :delete
   end
 end
