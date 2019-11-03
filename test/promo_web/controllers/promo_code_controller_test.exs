@@ -180,8 +180,35 @@ defmodule PromoWeb.PromoCodeControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
-    #    test "configure a promo_code's radius"
-    #    test "deactivate a promo_code"
+    test "configure a promo_code's radius", %{
+      conn: conn,
+      promo_code: promo_code
+    } do
+      conn =
+        post(
+          conn,
+          Routes.promo_code_path(conn, :radius, promo_code.p_code, promo_code: %{radius: "2.5"})
+        )
+
+      assert %{
+               # TODO: verify actual values
+             } = json_response(conn, 200)["data"]
+    end
+
+    test "deactivate a promo_code", %{
+      conn: conn,
+      promo_code: promo_code
+    } do
+      conn =
+        post(
+          conn,
+          Routes.promo_code_path(conn, :deactivate, promo_code.p_code)
+        )
+
+      assert %{
+               # TODO: verify actual values
+             } = json_response(conn, 200)["data"]
+    end
   end
 
   defp create_promo_code(_) do
