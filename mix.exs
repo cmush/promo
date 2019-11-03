@@ -42,7 +42,9 @@ defmodule Promo.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 1.6"},
-      {:distillery, "~> 2.1"}
+      {:distillery, "~> 2.1"},
+      {:bureaucrat, "~> 0.2.5"},
+      {:poison, "~> 4.0"}
     ]
   end
 

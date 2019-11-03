@@ -21,6 +21,9 @@ defmodule PromoWeb.ConnCase do
       use Phoenix.ConnTest
       alias PromoWeb.Router.Helpers, as: Routes
 
+      # Helpers to document the API through tests
+      import Bureaucrat.Helpers
+
       # The default endpoint for testing
       @endpoint PromoWeb.Endpoint
     end
