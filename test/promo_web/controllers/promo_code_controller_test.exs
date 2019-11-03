@@ -84,23 +84,49 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   describe "index" do
     test "lists all promo_codes", %{conn: conn} do
-      conn = get(conn, Routes.promo_code_path(conn, :index))
+      conn =
+        conn
+        |> get(Routes.promo_code_path(conn, :index))
+        |> doc(
+          description: "list all promo codes regardless of state",
+          operation_id: "index"
+        )
+
       assert json_response(conn, 200)["data"] == []
     end
 
     test "lists all valid promo_codes (promo codes where validity == active)", %{conn: conn} do
-      conn = get(conn, Routes.promo_code_path(conn, :index, validity: "active"))
+      conn =
+        conn
+        |> get(Routes.promo_code_path(conn, :index, validity: "active"))
+        |> doc(
+          description: "lists all valid promo_codes (promo codes where validity == active)",
+          operation_id: "index"
+        )
+
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create promo_code" do
     test "renders promo_code when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+      conn =
+        conn
+        |> post(Routes.promo_code_path(conn, :create), promo_code: @create_attrs)
+        |> doc(
+          description: "renders promo_code when data is valid",
+          operation_id: "create"
+        )
 
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.promo_code_path(conn, :show, id))
+      conn =
+        conn
+        |> get(Routes.promo_code_path(conn, :show, id))
+        |> doc(
+          description: "retrieve a single promo_code by id",
+          operation_id: "show"
+        )
 
       assert %{
                # TODO: verify actual values
@@ -108,7 +134,14 @@ defmodule PromoWeb.PromoCodeControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.promo_code_path(conn, :create), promo_code: @invalid_attrs)
+      conn =
+        conn
+        |> post(Routes.promo_code_path(conn, :create), promo_code: @invalid_attrs)
+        |> doc(
+          description: "renders errors when data is invalid",
+          operation_id: "create"
+        )
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -123,8 +156,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
       {:ok, event_location} = EventLocations.create_event_location(@updated_event_location)
 
       conn =
-        put(conn, Routes.promo_code_path(conn, :update, promo_code),
+        conn
+        |> put(Routes.promo_code_path(conn, :update, promo_code),
           promo_code: %{@update_attrs | event_location_id: event_location.id}
+        )
+        |> doc(
+          description: "renders promo_code when data is valid",
+          operation_id: "update"
         )
 
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
@@ -138,7 +176,12 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, promo_code: promo_code} do
       conn =
-        put(conn, Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+        conn
+        |> put(Routes.promo_code_path(conn, :update, promo_code), promo_code: @invalid_attrs)
+        |> doc(
+          description: "renders errors when data is invalid",
+          operation_id: "update"
+        )
 
       assert json_response(conn, 422)["errors"] != %{}
     end
@@ -148,7 +191,14 @@ defmodule PromoWeb.PromoCodeControllerTest do
     setup [:create_promo_code]
 
     test "deletes chosen promo_code", %{conn: conn, promo_code: promo_code} do
-      conn = delete(conn, Routes.promo_code_path(conn, :delete, promo_code))
+      conn =
+        conn
+        |> delete(Routes.promo_code_path(conn, :delete, promo_code))
+        |> doc(
+          description: "deletes chosen promo_code",
+          operation_id: "index"
+        )
+
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
@@ -167,12 +217,16 @@ defmodule PromoWeb.PromoCodeControllerTest do
       %PromoCode{p_code: p_code} = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
 
       conn =
-        post(
-          conn,
+        conn
+        |> post(
           Routes.promo_code_path(conn, :check_validity, p_code,
             origin: @origin_location,
             destination: @destination_location
           )
+        )
+        |> doc(
+          description: "check validity of supplied promo_code (active && yet to expire)",
+          operation_id: "check_validity"
         )
 
       assert %{
@@ -185,9 +239,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
       promo_code: promo_code
     } do
       conn =
-        post(
-          conn,
+        conn
+        |> post(
           Routes.promo_code_path(conn, :radius, promo_code.p_code, promo_code: %{radius: "2.5"})
+        )
+        |> doc(
+          description: "configure a promo_code's radius",
+          operation_id: "radius"
         )
 
       assert %{
@@ -200,9 +258,11 @@ defmodule PromoWeb.PromoCodeControllerTest do
       promo_code: promo_code
     } do
       conn =
-        post(
-          conn,
-          Routes.promo_code_path(conn, :deactivate, promo_code.p_code)
+        conn
+        |> post(Routes.promo_code_path(conn, :deactivate, promo_code.p_code))
+        |> doc(
+          description: "deactivate a promo_code",
+          operation_id: "index"
         )
 
       assert %{
