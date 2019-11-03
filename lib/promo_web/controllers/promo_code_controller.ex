@@ -41,11 +41,7 @@ defmodule PromoWeb.PromoCodeController do
   defp create_promo_code(conn, promo_code_params, event_location_id) do
     promo_code_params =
       promo_code_params
-      |> Map.put(
-        "p_code",
-        # flawed: carries a small range of unique codes
-        code_prefix() <> "-" <> random_string(5)
-      )
+      |> upsert_p_code()
       |> Map.put("event_location_id", event_location_id)
 
     with {:ok, %PromoCode{} = promo_code} <-
@@ -56,6 +52,18 @@ defmodule PromoWeb.PromoCodeController do
       |> render("show.json", promo_code: promo_code)
     end
   end
+
+  # skip inserting a p_code if one has already been supplied in the request
+  defp upsert_p_code(%{"p_code" => _p_code} = promo_code_params), do: promo_code_params
+  # generate a p_code if its missing in the request
+  defp upsert_p_code(%{} = promo_code_params),
+    do:
+      Map.put(
+        promo_code_params,
+        "p_code",
+        # flawed: carries a small range of unique codes
+        code_prefix() <> "-" <> random_string(5)
+      )
 
   def random_string(length) do
     :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length)
