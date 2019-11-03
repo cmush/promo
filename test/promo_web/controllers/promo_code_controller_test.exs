@@ -83,7 +83,9 @@ defmodule PromoWeb.PromoCodeControllerTest do
   end
 
   describe "index" do
-    test "lists all promo_codes", %{conn: conn} do
+    setup [:create_promo_code]
+
+    test "lists all promo_codes", %{conn: conn, promo_code: promo_code} do
       conn =
         conn
         |> get(Routes.promo_code_path(conn, :index))
@@ -92,10 +94,27 @@ defmodule PromoWeb.PromoCodeControllerTest do
           operation_id: "index"
         )
 
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] == [
+               %{
+                 "amount" => 120.5,
+                 "event_location" => %{
+                   "latitude" => "-1.30583211",
+                   "longitude" => "36.73916371",
+                   "place" => "Nairobi, Ngong Racecourse"
+                 },
+                 "expiry_date" => "2019-11-08",
+                 "id" => promo_code.id,
+                 "p_code" => "some p_code",
+                 "radius" => 120.5,
+                 "status" => true
+               }
+             ]
     end
 
-    test "lists all valid promo_codes (promo codes where validity == active)", %{conn: conn} do
+    test "lists all valid promo_codes (promo codes where validity == active)", %{
+      conn: conn,
+      promo_code: promo_code
+    } do
       conn =
         conn
         |> get(Routes.promo_code_path(conn, :index, validity: "active"))
@@ -104,7 +123,21 @@ defmodule PromoWeb.PromoCodeControllerTest do
           operation_id: "index"
         )
 
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] == [
+               %{
+                 "amount" => 120.5,
+                 "event_location" => %{
+                   "latitude" => "-1.30583211",
+                   "longitude" => "36.73916371",
+                   "place" => "Nairobi, Ngong Racecourse"
+                 },
+                 "expiry_date" => "2019-11-08",
+                 "id" => promo_code.id,
+                 "p_code" => "some p_code",
+                 "radius" => 120.5,
+                 "status" => true
+               }
+             ]
     end
   end
 

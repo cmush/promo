@@ -28,12 +28,26 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW-1PgNhjPzMAAAMB
+x-request-id: FdOtW5OijUBTJSgAAAQh
 ```
 * __Response body:__
 ```json
 {
-  "data": []
+  "data": [
+    {
+      "status": true,
+      "radius": 120.5,
+      "p_code": "some p_code",
+      "id": 1716,
+      "expiry_date": "2019-11-08",
+      "event_location": {
+        "place": "Nairobi, Ngong Racecourse",
+        "longitude": "36.73916371",
+        "latitude": "-1.30583211"
+      },
+      "amount": 120.5
+    }
+  ]
 }
 ```
 
@@ -52,12 +66,26 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8HqJMDOZEcAAAKh
+x-request-id: FdOtW5bz3wgYT4QAAAUh
 ```
 * __Response body:__
 ```json
 {
-  "data": []
+  "data": [
+    {
+      "status": true,
+      "radius": 120.5,
+      "p_code": "some p_code",
+      "id": 1720,
+      "expiry_date": "2019-11-08",
+      "event_location": {
+        "place": "Nairobi, Ngong Racecourse",
+        "longitude": "36.73916371",
+        "latitude": "-1.30583211"
+      },
+      "amount": 120.5
+    }
+  ]
 }
 ```
 
@@ -96,8 +124,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW-0PapgtaSkAAAFk
-location: /api/promo_codes/1594
+x-request-id: FdOtW5G1hmgY_AIAAAOh
+location: /api/promo_codes/1714
 ```
 * __Response body:__
 ```json
@@ -106,9 +134,9 @@ location: /api/promo_codes/1594
     "status": true,
     "radius": 120.5,
     "p_code": "some p_code",
-    "id": 1594,
+    "id": 1714,
     "expiry_date": "2019-11-08",
-    "event_location_id": 3251,
+    "event_location_id": 3474,
     "amount": 120.5
   }
 }
@@ -118,7 +146,7 @@ location: /api/promo_codes/1594
 #### retrieve a single promo_code by id
 ##### Request
 * __Method:__ GET
-* __Path:__ /api/promo_codes/1594
+* __Path:__ /api/promo_codes/1714
 * __Request headers:__
 ```
 accept: application/json
@@ -130,7 +158,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW-0t50gtaSkAAANC
+x-request-id: FdOtW5JHoMAY_AIAAAPB
 ```
 * __Response body:__
 ```json
@@ -139,9 +167,9 @@ x-request-id: FdOsW-0t50gtaSkAAANC
     "status": true,
     "radius": 120.5,
     "p_code": "some p_code",
-    "id": 1594,
+    "id": 1714,
     "expiry_date": "2019-11-08",
-    "event_location_id": 3251,
+    "event_location_id": 3474,
     "amount": 120.5
   }
 }
@@ -182,7 +210,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8E49WAYT4QAAAID
+x-request-id: FdOtW5T2fLB5Z1EAAATB
 ```
 * __Response body:__
 ```json
@@ -197,7 +225,7 @@ x-request-id: FdOsW8E49WAYT4QAAAID
 #### renders promo_code when data is valid
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/1591
+* __Path:__ /api/promo_codes/1718
 * __Request headers:__
 ```
 accept: application/json
@@ -211,7 +239,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
     "radius": 456.7,
     "p_code": "some updated p_code",
     "expiry_date": "2019-11-02",
-    "event_location_id": 3248,
+    "event_location_id": 3479,
     "event_location": {
       "place": "Nairobi, Upperhill",
       "longitude": "36.820030",
@@ -228,7 +256,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8ItX7BV3_oAAALB
+x-request-id: FdOtW5Sz-VjA6_AAAASB
 ```
 * __Response body:__
 ```json
@@ -237,9 +265,9 @@ x-request-id: FdOsW8ItX7BV3_oAAALB
     "status": false,
     "radius": 456.7,
     "p_code": "some updated p_code",
-    "id": 1591,
+    "id": 1718,
     "expiry_date": "2019-11-02",
-    "event_location_id": 3248,
+    "event_location_id": 3479,
     "amount": 456.7
   }
 }
@@ -248,7 +276,7 @@ x-request-id: FdOsW8ItX7BV3_oAAALB
 #### renders errors when data is invalid
 ##### Request
 * __Method:__ PUT
-* __Path:__ /api/promo_codes/1588
+* __Path:__ /api/promo_codes/1715
 * __Request headers:__
 ```
 accept: application/json
@@ -279,7 +307,7 @@ content-type: multipart/mixed; boundary=plug_conn_test
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW77o03BI8acAAAKB
+x-request-id: FdOtW5KxxKDbnp0AAAQB
 ```
 * __Response body:__
 ```json
@@ -311,7 +339,7 @@ x-request-id: FdOsW77o03BI8acAAAKB
 #### deletes chosen promo_code
 ##### Request
 * __Method:__ DELETE
-* __Path:__ /api/promo_codes/1593
+* __Path:__ /api/promo_codes/1719
 * __Request headers:__
 ```
 accept: application/json
@@ -322,7 +350,7 @@ accept: application/json
 * __Response headers:__
 ```
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW-wyFnBObqwAAAMC
+x-request-id: FdOtW5VGzzBI8acAAATh
 ```
 * __Response body:__
 ```json
@@ -345,7 +373,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8LVljCis5UAAALC
+x-request-id: FdOtW2zR2GDAhjcAAANh
 ```
 * __Response body:__
 ```json
@@ -357,7 +385,7 @@ x-request-id: FdOsW8LVljCis5UAAALC
       "points": "h~vFyft_Fx@u@jArAlAzAn@t@VZVWZWVUx@q@ZUFAJ?h@_@xAwALG^LYb@aBfBsD`DeAv@u@p@YVs@p@y@h@{@n@}CjCcBnAm@h@mFrEgFhEoCxBa@f@CHQf@]\\WH}@Pc@Li@XoAdA}ApAwAjAi@j@q@|@c@z@i@~Ac@fBa@bBStAMdAOvBK|A[tEIjBGjBEnCIfBMdAcApFc@pDWbCe@hKStDKxBq@dL{@lO_@pFGzAChCBpAP|Bt@`IPpBZLP@rBSfAGn@DVF^Nd@\\`@n@hA~Bb@`Al@tAf@~@t@dAl@l@v@`@v@VfAP~@Bf@EpA[nAg@r@c@t@e@nCeBp@_@pEiCpAw@x@[jAWv@K`AEjA?vBJ`CRpAX|Ad@r@Xt@^`DbCfDfCvAhAp@f@ZV\\N\\NJFp@^`@NFANBJJDPADNNd@d@p@t@\\TvDhBdFbCvBfAdBbAx@f@vBtA\\Tp@t@~@pAhD|EzB|CjBnCvCbEhApAr@n@x@r@x@p@r@n@r@`@zBfAlCbAhBZlC\\dALz@D~@FbHHjGLrDDrD?dHJdCBdD@rBDfD@dABBOReAHe@J_ADGHEF@LFLj@@XGXOvBFf@Lf@l@vBBb@ANILBTj@pBfA~D~CnLnG~UhFdSrGtV`DtLVhAL|@f@fE^zCl@`Fu@?NjA"
     },
     "p_code": "some p_code",
-    "id": 1592,
+    "id": 1713,
     "expiry_date": "2019-11-08",
     "event_location": {
       "place": "Nairobi, Ngong Racecourse",
@@ -386,7 +414,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8G0cqgQlCgAAAKi
+x-request-id: FdOtW5Qe1agldnQAAARh
 ```
 * __Response body:__
 ```json
@@ -395,9 +423,9 @@ x-request-id: FdOsW8G0cqgQlCgAAAKi
     "status": true,
     "radius": 120.5,
     "p_code": "some p_code",
-    "id": 1590,
+    "id": 1717,
     "expiry_date": "2019-11-08",
-    "event_location_id": 3246,
+    "event_location_id": 3477,
     "amount": 120.5
   }
 }
@@ -419,7 +447,7 @@ accept: application/json
 ```
 content-type: application/json; charset=utf-8
 cache-control: max-age=0, private, must-revalidate
-x-request-id: FdOsW8Fd3pie4UsAAAIj
+x-request-id: FdOtW2ns_DiYj7oAAADE
 ```
 * __Response body:__
 ```json
@@ -428,9 +456,9 @@ x-request-id: FdOsW8Fd3pie4UsAAAIj
     "status": true,
     "radius": 120.5,
     "p_code": "some p_code",
-    "id": 1589,
+    "id": 1712,
     "expiry_date": "2019-11-08",
-    "event_location_id": 3245,
+    "event_location_id": 3472,
     "amount": 120.5
   }
 }
