@@ -3,33 +3,28 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   alias Promo.EventLocations
 
-  #  @origin_location %{
-  #    latitude: "-1.269650",
-  #    longitude: "36.808922",
-  #    place: "Nairobi, Westlands"
-  #  }
-  #
-  #  @destination_location %{
-  #    latitude: "-1.285790",
-  #    longitude: "36.820030",
-  #    place: "Nairobi, Upperhill"
-  #  }
-
-  @valid_event_location %{
-    latitude: "some latitude",
-    longitude: "some longitude",
-    place: "some place"
+  @origin_location %{
+    latitude: "-1.269650",
+    longitude: "36.808922",
+    place: "Nairobi, Westlands"
   }
+
   @update_event_location %{
-    latitude: "some updated latitude",
-    longitude: "some updated longitude",
-    place: "some updated place"
+    latitude: "-1.285790",
+    longitude: "36.820030",
+    place: "Nairobi, Upperhill"
+  }
+
+  @destination_location %{
+    place: "Nairobi, Ngong Racecourse",
+    longitude: "36.73916371",
+    latitude: "-1.30583211"
   }
 
   def event_location_fixture(attrs \\ %{}) do
     {:ok, event_location} =
       attrs
-      |> Enum.into(@valid_event_location)
+      |> Enum.into(@origin_location)
       |> EventLocations.create_event_location()
 
     event_location
@@ -188,19 +183,13 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn: conn,
       promo_code: promo_code
     } do
-      IO.inspect(promo_code, label: "promo_code")
       %PromoCode{p_code: p_code} = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
-      IO.inspect(promo_code, label: "promo_code")
 
       conn
       |> post(
         Routes.promo_code_path(conn, :check_validity, p_code,
-          origin: %{latitude: "-1.269650", longitude: "36.808922", place: "Nairobi, Westlands"},
-          destination: %{
-            latitude: "-1.269650",
-            longitude: "36.808922",
-            place: "Nairobi, Westlands"
-          }
+          origin: @origin_location,
+          destination: @destination_location
         )
       )
     end

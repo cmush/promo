@@ -121,18 +121,43 @@ defmodule PromoWeb.PromoCodeController do
   def check_validity(%{
         "p_code" => p_code,
         "origin" => %{
-          "place" => _ori_place,
+          "place" => ori_place,
           "latitude" => _ori_latitude,
           "longitude" => _ori_longitude
         },
         "destination" => %{
-          "place" => _dest_place,
+          "place" => dest_place,
           "latitude" => _dest_latitude,
           "longitude" => _dest_longitude
         }
       }) do
-    with promo_code <- PromoCodes.get_valid_promo_code_by_code!(p_code) do
+    with promo_code <- validation(p_code, ori_place, dest_place) do
       promo_code
+    end
+  end
+
+  defp validation(p_code, ori_place, dest_place) do
+    # 1. begin by fetching the promo code
+    # 2. ensure that the validity check request fails if neither the origin nor
+    #    the destination supplied for the journey equals the event_location
+    #    associated to the promo_code
+    # 3. fetch distance and polyline from the GMaps API
+
+    PromoCodes.get_valid_promo_code_by_code!(p_code)
+    |> origin_or_destination_equals_event(ori_place, dest_place)
+  end
+
+  defp origin_or_destination_equals_event(
+         %PromoCode{event_locations: event_locations} = promo_code,
+         ori_place,
+         dest_place
+       ) do
+    case ori_place == event_locations.place || dest_place == event_locations.place do
+      false ->
+        {:error, :origin_or_destination_not_equal_to_event}
+
+      true ->
+        promo_code
     end
   end
 end
