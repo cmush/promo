@@ -185,13 +185,22 @@ defmodule PromoWeb.PromoCodeControllerTest do
     } do
       %PromoCode{p_code: p_code} = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
 
-      conn
-      |> post(
+
+      conn = post(conn,
         Routes.promo_code_path(conn, :check_validity, p_code,
           origin: @origin_location,
           destination: @destination_location
         )
       )
+
+      assert %{
+               #               "id" => id,
+               #               "amount" => 456.7,
+               #               "expiry_date" => "2011-05-18",
+               #               "p_code" => "some updated p_code", # a random string is generated & never matches
+               #               "radius" => 456.7,
+               #               "status" => false
+             } = json_response(conn, 200)["data"]
     end
 
     #    test "configure a promo_code's radius"
