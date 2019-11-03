@@ -20,4 +20,11 @@ defmodule PromoWeb.ErrorView do
         "supplied promo_code is either nonexistent or invalid (i.e, expired, deactivated or not allowed for destination due to cost or distance constraints) "
     }
   end
+
+  def render("origin_or_destination_not_equal_to_event.json", _) do
+    %{
+      error:
+        "supplied promo_code is not valid for specified journey: origin or destination should match event location"
+    }
+  end
 end

@@ -3,16 +3,22 @@ defmodule PromoWeb.PromoCodeControllerTest do
 
   alias Promo.EventLocations
 
-  @origin_location %{
-    latitude: "-1.269650",
-    longitude: "36.808922",
-    place: "Nairobi, Westlands"
+  @event_location %{
+    latitude: "-1.2982",
+    longitude: "36.7624",
+    place: "Nairobi, The Junction Mall"
   }
 
   @update_event_location %{
     latitude: "-1.285790",
     longitude: "36.820030",
     place: "Nairobi, Upperhill"
+  }
+
+  @origin_location %{
+    latitude: "-1.269650",
+    longitude: "36.808922",
+    place: "Nairobi, Westlands"
   }
 
   @destination_location %{
@@ -24,7 +30,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
   def event_location_fixture(attrs \\ %{}) do
     {:ok, event_location} =
       attrs
-      |> Enum.into(@origin_location)
+      |> Enum.into(@event_location)
       |> EventLocations.create_event_location()
 
     event_location
@@ -112,12 +118,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
 
       assert %{
-               #               "id" => id,
-               #               "amount" => 120.5,
-               #               "expiry_date" => "2010-04-17",
-               #               "p_code" => "some p_code", # a random string is generated & never matches
-               #               "radius" => 120.5,
-               #               "status" => true
+               # TODO: verify actual values
              } = json_response(conn, 200)["data"]
     end
 
@@ -146,12 +147,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
       conn = get(conn, Routes.promo_code_path(conn, :show, id))
 
       assert %{
-               #               "id" => id,
-               #               "amount" => 456.7,
-               #               "expiry_date" => "2011-05-18",
-               #               "p_code" => "some updated p_code", # a random string is generated & never matches
-               #               "radius" => 456.7,
-               #               "status" => false
+               # TODO: verify actual values
              } = json_response(conn, 200)["data"]
     end
 
@@ -185,21 +181,17 @@ defmodule PromoWeb.PromoCodeControllerTest do
     } do
       %PromoCode{p_code: p_code} = PromoCodes.get_promo_code_by_code!(promo_code.p_code)
 
-
-      conn = post(conn,
-        Routes.promo_code_path(conn, :check_validity, p_code,
-          origin: @origin_location,
-          destination: @destination_location
+      conn =
+        post(
+          conn,
+          Routes.promo_code_path(conn, :check_validity, p_code,
+            origin: @origin_location,
+            destination: @destination_location
+          )
         )
-      )
 
       assert %{
-               #               "id" => id,
-               #               "amount" => 456.7,
-               #               "expiry_date" => "2011-05-18",
-               #               "p_code" => "some updated p_code", # a random string is generated & never matches
-               #               "radius" => 456.7,
-               #               "status" => false
+               # TODO: verify actual values
              } = json_response(conn, 200)["data"]
     end
 

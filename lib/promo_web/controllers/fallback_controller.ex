@@ -40,4 +40,11 @@ defmodule PromoWeb.FallbackController do
     |> put_view(PromoWeb.ErrorView)
     |> render("valid_promo_code_not_found_error.json")
   end
+
+  def call(conn, {:error, :origin_or_destination_not_equal_to_event}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(PromoWeb.ErrorView)
+    |> render("origin_or_destination_not_equal_to_event.json")
+  end
 end

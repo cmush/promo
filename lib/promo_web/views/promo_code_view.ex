@@ -49,7 +49,14 @@ defmodule PromoWeb.PromoCodeView do
   end
 
   def render("show_with_event_location_distance_and_polyline.json", %{promo_code: promo_code}) do
-    %{data: render_one(promo_code, PromoCodeView, "promo_code_with_event_location_distance_and_polyline.json")}
+    %{
+      data:
+        render_one(
+          promo_code,
+          PromoCodeView,
+          "promo_code_with_event_location_distance_and_polyline.json"
+        )
+    }
   end
 
   def render("promo_code_with_event_location_distance_and_polyline.json", %{
