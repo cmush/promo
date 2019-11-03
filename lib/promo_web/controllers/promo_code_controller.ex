@@ -1,10 +1,13 @@
 defmodule PromoWeb.PromoCodeController do
+  require Logger
   use PromoWeb, :controller
 
   alias Promo.{PromoCodes, EventLocations}
   alias Promo.{PromoCodes.PromoCode, EventLocations.EventLocation}
 
   action_fallback PromoWeb.FallbackController
+
+  alias HttpClient.GmapsClient
 
   def index(conn, %{"validity" => "active"}) do
     promo_codes = PromoCodes.list_valid_promo_codes()
@@ -122,29 +125,32 @@ defmodule PromoWeb.PromoCodeController do
         "p_code" => p_code,
         "origin" => %{
           "place" => ori_place,
-          "latitude" => _ori_latitude,
-          "longitude" => _ori_longitude
+          "latitude" => ori_latitude,
+          "longitude" => ori_longitude
         },
         "destination" => %{
           "place" => dest_place,
-          "latitude" => _dest_latitude,
-          "longitude" => _dest_longitude
+          "latitude" => dest_latitude,
+          "longitude" => dest_longitude
         }
       }) do
-    with promo_code <- validation(p_code, ori_place, dest_place) do
-      promo_code
-    end
-  end
-
-  defp validation(p_code, ori_place, dest_place) do
     # 1. begin by fetching the promo code
-    # 2. ensure that the validity check request fails if neither the origin nor
-    #    the destination supplied for the journey equals the event_location
-    #    associated to the promo_code
-    # 3. fetch distance and polyline from the GMaps API
+    with %PromoCode{} = promo_code <- PromoCodes.get_valid_promo_code_by_code!(p_code) do
+      # 2. ensure that the validity check request fails if neither the origin nor
+      #    the destination supplied for the journey equals the event_location
+      #    associated to the promo_code
+      # 3. fetch distance and polyline from the GMaps API
 
-    PromoCodes.get_valid_promo_code_by_code!(p_code)
-    |> origin_or_destination_equals_event(ori_place, dest_place)
+      promo_code
+      # step 2
+      |> origin_or_destination_equals_event(ori_place, dest_place)
+      |> validate_within_allowed_radius(
+        # origin coordinates
+        ori_latitude <> "," <> ori_longitude,
+        # destination coordinates
+        dest_latitude <> "," <> dest_longitude
+      )
+    end
   end
 
   defp origin_or_destination_equals_event(
@@ -159,5 +165,48 @@ defmodule PromoWeb.PromoCodeController do
       true ->
         promo_code
     end
+  end
+
+  @spec validate_within_allowed_radius(any, any, any) :: any
+  def validate_within_allowed_radius(
+        %PromoCode{radius: allowed_radius} = promo_code,
+        origin,
+        destination
+      ) do
+    %{
+      "distance" => distance_to_destination,
+      # overview polyline
+      "polyline" => polyline
+    } = get_distance_and_polyline(origin, destination)
+
+    Logger.debug("distance_to_destination: #{inspect(distance_to_destination)}")
+    Logger.debug("allowed_radius: #{inspect(allowed_radius)}")
+
+    allowed = distance_to_destination > allowed_radius
+    Logger.debug("distance_to_destination > allowed_radius?: #{inspect(allowed)}")
+
+    if allowed do
+      :distance_to_cover_exceeds_radius_allowed
+    else
+      Map.put(promo_code, :polyline, polyline)
+    end
+  end
+
+  def validate_within_allowed_radius(state, _origin, _destination), do: state
+  @spec get_distance_and_polyline(any, any) :: %{optional(<<_::64>>) => any}
+  def get_distance_and_polyline(origin, destination) do
+    resp = GmapsClient.fetch_directions(origin, destination)
+    [routes] = resp.routes
+    [legs] = routes.legs
+
+    %{
+      "distance" => meters_to_kilometers(legs.distance.value),
+      "polyline" => routes.overview_polyline
+    }
+  end
+
+  @spec meters_to_kilometers(number) :: float
+  def meters_to_kilometers(distance_in_meters) do
+    Float.round(distance_in_meters / 1000, 1)
   end
 end
