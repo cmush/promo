@@ -7,7 +7,7 @@ defmodule Promo.PromoCodes.PromoCode do
     field :expiry_date, :date
     field :p_code, :string
     field :radius, :float
-    field :status, :boolean, default: false
+    field :status, :boolean
     field :event_location_id, :id
 
     has_one :event_locations, Promo.EventLocations.EventLocation,
@@ -22,5 +22,6 @@ defmodule Promo.PromoCodes.PromoCode do
     promo_code
     |> cast(attrs, [:p_code, :amount, :expiry_date, :status, :radius, :event_location_id])
     |> validate_required([:p_code, :amount, :expiry_date, :status, :radius, :event_location_id])
+    |> unique_constraint(:p_code)
   end
 end

@@ -6,7 +6,7 @@ defmodule Promo.Repo.Migrations.CreatePromoCodes do
       add :p_code, :string, null: false
       add :amount, :float, null: false
       add :expiry_date, :date, null: false
-      add :status, :boolean, default: false, null: true
+      add :status, :boolean, default: true, null: true
       add :radius, :float
       add :event_location_id, references(:event_locations, on_delete: :nothing), null: false
 
@@ -14,5 +14,6 @@ defmodule Promo.Repo.Migrations.CreatePromoCodes do
     end
 
     create index(:promo_codes, [:event_location_id])
+    create unique_index(:promo_codes, [:p_code])
   end
 end
