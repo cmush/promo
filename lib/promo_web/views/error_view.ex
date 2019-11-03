@@ -16,7 +16,8 @@ defmodule PromoWeb.ErrorView do
 
   def render("valid_promo_code_not_found_error.json", _) do
     %{
-      error: "supplied promo_code is either nonexistent or invalid (i.e, expired, deactivated or not allowed for destination due to cost or distance constraints) "
+      error:
+        "supplied promo_code is either nonexistent or invalid (i.e, expired, deactivated or not allowed for destination due to cost or distance constraints) "
     }
   end
 end

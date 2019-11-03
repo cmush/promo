@@ -115,7 +115,7 @@ defmodule PromoWeb.PromoCodeController do
     with(%PromoCode{} = promo_code <- check_validity(request)) do
       render(
         conn,
-        "show.json",
+        "show_with_event_location_distance_and_polyline.json",
         promo_code: promo_code
       )
     end
@@ -179,16 +179,22 @@ defmodule PromoWeb.PromoCodeController do
       "polyline" => polyline
     } = get_distance_and_polyline(origin, destination)
 
-    Logger.debug("distance_to_destination: #{inspect(distance_to_destination)}")
-    Logger.debug("allowed_radius: #{inspect(allowed_radius)}")
+    Logger.debug("polyline: #{inspect(polyline)}")
 
-    allowed = distance_to_destination > allowed_radius
-    Logger.debug("distance_to_destination > allowed_radius?: #{inspect(allowed)}")
+    allowed = distance_to_destination <= allowed_radius
 
-    if allowed do
+    Logger.debug(
+      "distance_to_destination (#{inspect(distance_to_destination)}) <= allowed_radius (#{
+        inspect(allowed_radius)
+      })?: #{inspect(allowed)}"
+    )
+
+    if !allowed do
       :distance_to_cover_exceeds_radius_allowed
     else
-      Map.put(promo_code, :polyline, polyline)
+      promo_code
+      |> Map.put(:polyline, polyline)
+      |> Map.put(:distance_to_destination, distance_to_destination)
     end
   end
 

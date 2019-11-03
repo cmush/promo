@@ -7,8 +7,10 @@ defmodule Promo.PromoCodes.PromoCode do
     field :expiry_date, :date
     field :p_code, :string
     field :radius, :float
-    field :status, :boolean
+    field :status, :boolean, default: true
     field :event_location_id, :id
+    field :polyline, :string, virtual: true
+    field :distance_to_destination, :string, virtual: true
 
     has_one :event_locations, Promo.EventLocations.EventLocation,
       foreign_key: :id,
