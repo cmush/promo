@@ -40,9 +40,8 @@ WORKDIR /opt/app
 ## Install build tools needed in addition to Elixir:
 ## NodeJS is used for Webpack builds of Phoenix assets.
 ## Hex and Rebar are needed to get and build dependencies.
-## if there are webpack assets to build, install `nodejs nodejs-npm` as well
 RUN apk update \
-    && apk --no-cache --update add git \
+    && apk --no-cache --update add git nodejs nodejs-npm \
     && mix local.rebar --force \
     && mix local.hex --force
 
@@ -52,13 +51,13 @@ COPY . .
 # Build the application.
 RUN mix do deps.get, compile
 
-## Build assets by running a Webpack build and Phoenix digest.
-#RUN cd assets \
-#    && npm install \
-#    && ./node_modules/webpack/bin/webpack.js --mode production \
-#    && cd -
-#
-#RUN mix phx.digest
+# Build assets by running a Webpack build and Phoenix digest.
+RUN cd assets \
+    && npm install \
+    && ./node_modules/webpack/bin/webpack.js --mode production \
+    && cd -
+
+RUN mix phx.digest
 
 ARG app_vsn=0.1.0
 # Create the release & move it to /opt/release.
@@ -84,22 +83,19 @@ RUN apk update && apk --no-cache --update add bash openssl-dev
 
 # The runtime environment for promo
 ARG APP_NAME=promo
-ARG DATABASE_USERNAME
-ARG DATABASE_PASSWORD
-ARG DATABASE_NAME
-ARG DATABASE_HOST
-ARG DATABASE_POOL_SIZE
+ARG PORT
+ARG DATABASE_URL
+ARG GMAPS_API_KEY
+ARG BASE_URL_DIRECTIONS
 
 # Set up build environment.
 ENV MIX_ENV=${build_env} \
     TERM=xterm \
     REPLACE_OS_VARS=true \
-    DATABASE_USERNAME=${DATABASE_USERNAME} \
-    DATABASE_PASSWORD=${DATABASE_PASSWORD} \
-    DATABASE_NAME=${DATABASE_NAME} \
-    DATABASE_HOST=${DATABASE_HOST} \
-    DATABASE_PORT=${DATABASE_PORT} \
-    DATABASE_POOL_SIZE=${DATABASE_POOL_SIZE}
+    PORT=${PORT} \
+    DATABASE_URL=${DATABASE_URL} \
+    GMAPS_API_KEY=${GMAPS_API_KEY} \
+    BASE_URL_DIRECTIONS=${BASE_URL_DIRECTIONS}
 
 # Set the install directory. The app will run from here.
 WORKDIR /opt/app

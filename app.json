@@ -1,0 +1,35 @@
+{
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/hashnuke/elixir.tgz"
+    }
+  ],
+  "description": "Pipeline configuration",
+  "env": {
+    "GMAPS_API_KEY": {
+      "required": true
+    },
+    "MIX_ENV": "dev",
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "BASE_URL_DIRECTIONS": {
+      "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "safepromo",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
