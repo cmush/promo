@@ -36,3 +36,12 @@ promo-*.tar
 /config/*.secret.exs
 
 .elixir_ls/
+
+.idea
+
+assets/node_modules
+
+.DS_Store
+lib/.DS_Store
+
+secrets
