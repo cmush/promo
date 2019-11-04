@@ -9,6 +9,9 @@
   ],
   "description": "Pipeline configuration",
   "env": {
+    "PORT": {
+      "required": true
+    },
     "GMAPS_API_KEY": {
       "required": true
     },
