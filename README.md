@@ -3,6 +3,10 @@
 An elixir/phoenix micro service for management of promotional codes for issuing
 free rides on a ride sharing platform.
 
+Live Demo: https://safepromo.herokuapp.com
+API DOCS: https://github.com/cmush/promo/blob/master/API.md
+Oauth2.0 Not Added on master branch
+
 Promo uses the Google Maps API to calculate distances and fetch directions between
 the specified origin and destination.
 
