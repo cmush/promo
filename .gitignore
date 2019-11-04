@@ -44,3 +44,5 @@ assets/node_modules
 .DS_Store
 lib/.DS_Store
 
+secrets
+
