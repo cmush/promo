@@ -11,6 +11,11 @@ defmodule PromoWeb.Router do
          error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
+  pipeline :api_protected do
+    plug ExOauth2Provider.Plug.VerifyHeader, otp_app: :promo, realm: "Bearer"
+    plug ExOauth2Provider.Plug.EnsureAuthenticated
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -23,12 +28,20 @@ defmodule PromoWeb.Router do
     pipe_through :browser
 
     pow_routes()
+
+    # get "/", PageController, :index
   end
 
   scope "/", PromoWeb do
     pipe_through [:browser, :protected]
 
     # Add your protected routes here
+  end
+
+  scope "/" do
+    pipe_through :api
+
+    oauth_api_routes()
   end
 
   scope "/api", PromoWeb do
