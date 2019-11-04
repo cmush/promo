@@ -6,6 +6,13 @@ config :promo, PromoWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :promo,
+  gmaps_client_config: %{
+    :base_url__directions => "http://localhost:8081/destination/json",
+    :base_url__distance_matrix => "",
+    :api_key => "gmaps_api_key"
+  }
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 
