@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "PORT"
+export PORT=${PORT}
+
 echo "BASE_URL_DIRECTIONS"
 export BASE_URL_DIRECTIONS=${BASE_URL_DIRECTIONS}
 
