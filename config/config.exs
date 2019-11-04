@@ -19,7 +19,7 @@ config :promo,
 config :promo, PromoWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "+3Ki8Jygk1ogSEag3mXmgEwYcd2GNd/Qo8ri07lHh66LjSF9gsrFpf+i6XfFtgal",
-  render_errors: [view: PromoWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: PromoWeb.ErrorView, accepts: ~w(html)],
   pubsub: [name: Promo.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
