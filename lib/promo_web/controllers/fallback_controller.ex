@@ -47,4 +47,11 @@ defmodule PromoWeb.FallbackController do
     |> put_view(PromoWeb.ErrorView)
     |> render("origin_or_destination_not_equal_to_event.json")
   end
+
+  def call(conn, {:error, :distance_to_cover_exceeds_radius_allowed, distance_exceeded}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(PromoWeb.ErrorView)
+    |> render("distance_to_cover_exceeds_radius_allowed.json", distance_exceeded: distance_exceeded)
+  end
 end

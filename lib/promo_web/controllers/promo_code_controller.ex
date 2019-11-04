@@ -192,7 +192,8 @@ defmodule PromoWeb.PromoCodeController do
     )
 
     if !allowed do
-      :distance_to_cover_exceeds_radius_allowed
+      distance_exceeded = distance_to_destination - allowed_radius
+      {:error, :distance_to_cover_exceeds_radius_allowed, distance_exceeded}
     else
       promo_code
       |> Map.put(:polyline, polyline)
