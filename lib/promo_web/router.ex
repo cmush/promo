@@ -1,6 +1,7 @@
 defmodule PromoWeb.Router do
   use PromoWeb, :router
   use Pow.Phoenix.Router
+  use PhoenixOauth2Provider.Router, otp_app: :promo
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -8,7 +9,7 @@ defmodule PromoWeb.Router do
 
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
-         error_handler: Pow.Phoenix.PlugErrorHandler
+      error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
   pipeline :api_protected do
@@ -28,8 +29,12 @@ defmodule PromoWeb.Router do
     pipe_through :browser
 
     pow_routes()
+  end
 
-    # get "/", PageController, :index
+  scope "/", PromoWeb do
+    pipe_through [:browser]
+
+    get "/", PageController, :index
   end
 
   scope "/", PromoWeb do
