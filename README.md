@@ -45,7 +45,7 @@ If you prefer a less tedious/complete bunch of release commands, use:
 *NB* the above release steps are the gist of containerizing this app (docker).
 
 To run the release:
-`GMAPS_API_KEY=key PORT=4001 _build/prod/rel/promo/bin/promo foreground`
+`GMAPS_API_KEY=key SECRET_KEY_BASE=secret_key PORT=4001 _build/prod/rel/promo/bin/promo foreground`
 
 `:promo` prod env variables to be set:
 
@@ -53,14 +53,11 @@ To run the release:
 * `BASE_URL_DIRECTIONS=https://maps.googleapis.com/maps/api/directions/`
 * `GMAPS_API_KEY=google-maps-api-key`
 * `DATABASE_URL=postgres://username:password@host:port/prod_db_name`
+* `SECRET_KEY_BASE=secret_key`
 
 - Defaults:
 
 * `PORT=4001`
-
-- Must not be set but nice to have:
-
-* `SECRET_KEY_BASE=secret_key_base`
 
 For further information about releases and their upgrades, refer to:
 https://hexdocs.pm/distillery/guides/phoenix_walkthrough.html#take-that-release-anywhere.   
