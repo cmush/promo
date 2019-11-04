@@ -44,7 +44,9 @@ defmodule Promo.MixProject do
       {:httpoison, "~> 1.6"},
       {:distillery, "~> 2.1"},
       {:bureaucrat, "~> 0.2.5"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:pow, "~> 1.0.14"},
+      {:phoenix_oauth2_provider, "~> 0.5.1"}
     ]
   end
 
