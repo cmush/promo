@@ -1,7 +1,8 @@
 defmodule Promo.Repo do
   use Ecto.Repo,
     otp_app: :promo,
-    adapter: Ecto.Adapters.Postgres
+    adapter: Ecto.Adapters.Postgres,
+    ssl: true
 
   @spec init(any, keyword) :: {:ok, [{atom, any}, ...]}
   def init(_type, config) do
