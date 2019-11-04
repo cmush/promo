@@ -100,15 +100,19 @@ defmodule PromoWeb.PromoCodeController do
   end
 
   def deactivate(conn, %{"p_code" => p_code}) do
-    with %PromoCode{} = promo_code <- PromoCodes.get_promo_code_by_code!(p_code) do
-      PromoCodes.update_promo_code(%{promo_code | status: false}, %{})
+    with {:ok, promo_code} <-
+           PromoCodes.update_promo_code(PromoCodes.get_promo_code_by_code!(p_code), %{
+             status: false
+           }) do
       render(conn, "show.json", promo_code: promo_code)
     end
   end
 
   def radius(conn, %{"p_code" => p_code, "promo_code" => %{"radius" => radius}}) do
-    with %PromoCode{} = promo_code <- PromoCodes.get_promo_code_by_code!(p_code) do
-      PromoCodes.update_promo_code(%{promo_code | radius: radius}, %{})
+    with {:ok, promo_code} <-
+           PromoCodes.update_promo_code(PromoCodes.get_promo_code_by_code!(p_code), %{
+             radius: radius
+           }) do
       render(conn, "show.json", promo_code: promo_code)
     end
   end

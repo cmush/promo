@@ -52,6 +52,8 @@ defmodule PromoWeb.FallbackController do
     conn
     |> put_status(:not_found)
     |> put_view(PromoWeb.ErrorView)
-    |> render("distance_to_cover_exceeds_radius_allowed.json", distance_exceeded: distance_exceeded)
+    |> render("distance_to_cover_exceeds_radius_allowed.json",
+      distance_exceeded: distance_exceeded
+    )
   end
 end

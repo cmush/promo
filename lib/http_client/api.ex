@@ -1,5 +1,6 @@
 defmodule HttpClient.Api do
   @moduledoc false
+  require Logger
 
   @doc """
     Send a GET request to the API
@@ -25,6 +26,8 @@ defmodule HttpClient.Api do
   """
 
   def call(url, method, body \\ "", headers \\ [], options \\ []) do
+    Logger.debug("url: #{inspect(url)}")
+
     HTTPoison.request(
       method,
       url,
