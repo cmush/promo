@@ -31,22 +31,29 @@ defmodule PromoWeb.Router do
     pow_routes()
   end
 
+  scope "/" do
+    pipe_through [:browser, :protected]
+
+    # Add your protected routes here
+    oauth_routes()
+  end
+
   scope "/", PromoWeb do
     pipe_through [:browser]
 
     get "/", PageController, :index
   end
 
-  scope "/", PromoWeb do
-    pipe_through [:browser, :protected]
-
-    # Add your protected routes here
-  end
-
   scope "/" do
     pipe_through :api
 
     oauth_api_routes()
+  end
+
+  scope "/api", PromoWeb do
+    pipe_through [:api, :api_protected]
+
+    resources "/accounts", UserController
   end
 
   scope "/api", PromoWeb do
