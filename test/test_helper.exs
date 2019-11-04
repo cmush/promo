@@ -1,6 +1,13 @@
 ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Promo.Repo, :manual)
 
+{:ok, gmaps_mock} = Plug.Cowboy.http(HttpClient.MockServer, [], port: 8081)
+
+IO.inspect(gmaps_mock,
+  label:
+    "GMaps Mock `HttpClient.MockServer` running as process #{inspect(gmaps_mock)} on port 8081"
+)
+
 # https://github.com/api-hogs/bureaucrat#configuration
 Bureaucrat.start(
   default_path: "API.md",

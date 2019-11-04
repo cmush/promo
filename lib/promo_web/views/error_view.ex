@@ -27,4 +27,13 @@ defmodule PromoWeb.ErrorView do
         "supplied promo_code is not valid for specified journey: origin or destination should match event location"
     }
   end
+
+  def render("distance_to_cover_exceeds_radius_allowed.json", %{
+        distance_exceeded: distance_exceeded
+      }) do
+    %{
+      error:
+        "distance to cover exceeds promo_code's allowed radius by #{distance_exceeded} Kilometers. A cash topup perhaps?"
+    }
+  end
 end

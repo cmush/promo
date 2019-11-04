@@ -4,9 +4,6 @@
 # requires the project ID to be passed in the project_id build arg.
 #
 # This Dockerfile includes two stages and requires Docker 17.05 or later.
-#
-# To adapt this Dockerfile to your app, you may need to customize the app_name
-# and phoenix_admin_subdir build arguments, as outlined below.
 
 
 ################################################################################
@@ -24,10 +21,6 @@ FROM elixir:${ALPINE_VERSION}-alpine AS builder
 
 ## The name of your Phoenix application.                                    ##
 ARG app_name=promo
-
-## The subdirectories of the Phoenix application (`umbrella_application`).  ##
-ARG phoenix_admin_subdir=apps/admin
-ARG phoenix_africabeat_subdir=apps/africabeat
 
 ## The build environment. This is usually prod, but you might change it if  ##
 ## you have staging environments.                                           ##

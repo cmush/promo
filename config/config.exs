@@ -10,8 +10,8 @@ use Mix.Config
 config :promo,
   ecto_repos: [Promo.Repo],
   gmaps_client_config: %{
-    :base_url__directions => "https://maps.googleapis.com/maps/api/directions/json",
-    :base_url__distance_matrix => "https://maps.googleapis.com/maps/api/distancematrix/json",
+    :base_url__directions => System.get_env("BASE_URL_DIRECTIONS"),
+    :base_url__distance_matrix => System.get_env("BASE_URL_DISTANCE_MATRIX"),
     :api_key => System.get_env("GMAPS_API_KEY")
   }
 
