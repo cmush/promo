@@ -102,7 +102,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
                    "longitude" => "36.73916371",
                    "place" => "Nairobi, Ngong Racecourse"
                  },
-                 "expiry_date" => "2019-11-08",
+                 "expiry_date" => Date.to_string(@create_attrs.expiry_date),
                  "id" => promo_code.id,
                  "p_code" => "some p_code",
                  "radius" => 120.5,
@@ -131,7 +131,7 @@ defmodule PromoWeb.PromoCodeControllerTest do
                    "longitude" => "36.73916371",
                    "place" => "Nairobi, Ngong Racecourse"
                  },
-                 "expiry_date" => "2019-11-08",
+                 "expiry_date" => Date.to_string(@create_attrs.expiry_date),
                  "id" => promo_code.id,
                  "p_code" => "some p_code",
                  "radius" => 120.5,
